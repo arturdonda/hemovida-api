@@ -1,0 +1,24 @@
+{
+	"name": "hemovida-api",
+	"version": "1.0.1",
+	"description": "API for the Hemovida platform",
+	"main": "src/index.ts",
+	"scripts": {
+		"predev": "set NODE_ENV=development",
+		"dev": "nodemon src/index.ts",
+		"prebuild": "rimraf ./build",
+		"build": "tsc",
+		"prestart": "set NODE_ENV=production",
+		"start": "node build/src/index.js",
+		"precommit": "npm version %npm_config_bump% --no-git-tag-version && git add package*.json",
+		"commit": "git commit",
+		"postcommit": "git push"
+	},
+	"devDependencies": {
+		"@tsconfig/node20": "^20.1.4",
+		"nodemon": "^3.1.4",
+		"rimraf": "^6.0.1",
+		"ts-node": "^10.9.2",
+		"typescript": "^5.5.4"
+	}
+}
