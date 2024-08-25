@@ -1,8 +1,8 @@
 #VS Code folder
 /.vscode
 
-# Build folder
-/build
+# Dist folder
+/dist
 
 # Node Modules foldes
 /node_modules
