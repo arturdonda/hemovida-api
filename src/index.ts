@@ -1,3 +1,6 @@
+import 'dotenv/config';
 import '../module-alias';
 
-console.log('Hello, world!');
+import { startApplication } from '@main/index';
+
+startApplication();

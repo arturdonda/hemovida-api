@@ -1,11 +1,11 @@
 {
 	"name": "hemovida-api",
-	"version": "1.0.2",
+	"version": "1.0.3",
 	"description": "API for the Hemovida platform",
 	"main": "src/index.ts",
 	"scripts": {
 		"predev": "set NODE_ENV=development",
-		"dev": "nodemon src/index.ts",
+		"dev": "nodemon src/index.ts -L",
 		"prebuild": "rimraf ./dist",
 		"build": "tsc",
 		"prestart": "set NODE_ENV=production",
@@ -15,10 +15,15 @@
 		"postcommit": "git push"
 	},
 	"dependencies": {
+		"cors": "^2.8.5",
+		"dotenv": "^16.4.5",
+		"express": "^4.19.2",
 		"module-alias": "^2.2.3"
 	},
 	"devDependencies": {
 		"@tsconfig/node20": "^20.1.4",
+		"@types/cors": "^2.8.17",
+		"@types/express": "^4.17.21",
 		"@types/module-alias": "^2.0.4",
 		"@types/node": "^22.5.0",
 		"nodemon": "^3.1.4",

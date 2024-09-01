@@ -4,16 +4,13 @@
 		"outDir": "dist",
 		"rootDir": "./",
 		"baseUrl": "src",
+		"resolveJsonModule": true,
+		"typeRoots": ["@types", "./node_modules/@types"],
 		"paths": {
-			"@domain": ["1_domain"],
 			"@domain/*": ["1_domain/*"],
-			"@application": ["2_application"],
 			"@application/*": ["2_application/*"],
-			"@infra": ["3_infra"],
 			"@infra/*": ["3_infra/*"],
-			"@presentation": ["4_presentation"],
 			"@presentation/*": ["4_presentation/*"],
-			"@main": ["5_main"],
 			"@main/*": ["5_main/*"],
 			"@root/*": ["../*"]
 		}
