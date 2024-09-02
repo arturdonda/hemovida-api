@@ -5,5 +5,6 @@ declare namespace NodeJS {
 		ENV: 'LOCAL' | 'DEV' | 'STAGE' | 'PROD';
 
 		PORT: number;
+		HOST: string;
 	}
 }

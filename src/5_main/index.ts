@@ -1,9 +1,7 @@
-import { Application, ServiceManager } from '@main/app';
+import { Application } from '@main/app';
 
 export function startApplication() {
-	const serviceManager = new ServiceManager();
+	const application = new Application({ port: process.env.PORT });
 
-	const application = new Application({ port: process.env.PORT, serviceManager });
-
-	application.start();
+	return application.start();
 }

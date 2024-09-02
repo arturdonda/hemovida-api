@@ -1,13 +1,23 @@
-import express, { Express } from 'express';
+import { Component } from '@domain/app';
 
-export class ServiceManager {
-	readonly express: Express;
-
+export class ServiceManager extends Component {
 	constructor() {
-		this.express = express();
+		super();
 	}
 
-	public async connectAllServices(): Promise<void> {}
+	public async connectAllServices(): Promise<void> {
+		this.logger.log('Connecting all services...');
 
-	public async disconnectAllServices(): Promise<void> {}
+		await Promise.resolve();
+
+		this.logger.log('All services are connected!');
+	}
+
+	public async disconnectAllServices(): Promise<void> {
+		this.logger.log('Disconnecting all services...');
+
+		await Promise.resolve();
+
+		this.logger.log('All services are disconnected!');
+	}
 }

@@ -1,68 +1,54 @@
 import { Component } from '@domain/app';
 import { ServiceManager } from '@main/app';
-import { configureRouter } from '@main/config';
-import { Server as HttpServer } from 'http';
+import { Server } from './server';
 
 export class Application extends Component {
-	private readonly serviceManager: Application.ConstructorParams['serviceManager'];
+	private readonly server: Server;
+	private readonly serviceManager: ServiceManager;
 	private readonly port: Application.ConstructorParams['port'];
-	private httpServer: HttpServer | undefined;
-	private isConfigured: boolean;
 
 	constructor(constructorParams: Application.ConstructorParams) {
 		super();
 
-		this.serviceManager = constructorParams.serviceManager;
+		this.server = new Server();
+		this.serviceManager = new ServiceManager();
 		this.port = constructorParams.port;
-		this.httpServer = undefined;
-		this.isConfigured = false;
 
-		['SIGINT', 'SIGTERM'].forEach(signal =>
+		this.configureGracefulShutdown();
+	}
+
+	private configureGracefulShutdown() {
+		for (const signal of ['SIGINT', 'SIGTERM']) {
 			process.on(signal, () => {
 				this.logger.log(`Signal '${signal}' received. Shutting down...`);
 				this.stop();
-			})
-		);
+			});
+		}
 	}
 
-	async configure(): Promise<void> {
-		// Configure logger
-		// Logger.configure();
-
-		// Connect services
+	private async configure(): Promise<void> {
 		await this.serviceManager.connectAllServices();
 
-		// // Configure pre-router middlewares
-		// configurePreRouterGlobalMiddlewares(this.serviceManager.express);
-
-		// // Configure router
-		configureRouter(this.serviceManager);
-
-		// // Configure post-router middlewares
-		// configurePostRouterGlobalMiddlewares(this.serviceManager.express);
-
-		this.isConfigured = true;
+		this.server.configure(this.serviceManager);
 	}
 
 	async start(): Promise<void> {
-		if (!!this.httpServer) throw new Error('Server is already running!');
+		await this.configure();
 
-		if (!this.isConfigured) await this.configure();
+		await this.server.start(this.port);
 
-		this.httpServer = this.serviceManager.express.listen(this.port, () => this.logger.log(`Running on port ${this.port}`));
+		this.logger.log(`Application is running on ${process.env.HOST}:${this.port}`);
 	}
 
 	async stop(): Promise<void> {
-		if (!this.httpServer) throw new Error('Server is not running!');
-
 		await this.serviceManager.disconnectAllServices();
 
-		return new Promise((resolve, reject) => {
-			this.httpServer!.close(() => resolve(this.logger.log(`Shutdown successfully`)));
-		});
+		await this.server.stop();
+
+		this.logger.log(`Application closed!`);
 	}
 }
 
 export namespace Application {
-	export type ConstructorParams = { port: number; serviceManager: ServiceManager };
+	export type ConstructorParams = { port: number };
 }
