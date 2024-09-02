@@ -20,7 +20,7 @@ export class Application extends Component {
 	private configureGracefulShutdown() {
 		for (const signal of ['SIGINT', 'SIGTERM']) {
 			process.on(signal, () => {
-				this.logger.log(`Signal '${signal}' received. Shutting down...`);
+				this.logger.log(`Signal '${signal}' received.`);
 				this.stop();
 			});
 		}
@@ -33,6 +33,8 @@ export class Application extends Component {
 	}
 
 	async start(): Promise<void> {
+		this.logger.log(`Starting application...`);
+
 		await this.configure();
 
 		await this.server.start(this.port);
@@ -41,6 +43,8 @@ export class Application extends Component {
 	}
 
 	async stop(): Promise<void> {
+		this.logger.log('Closing application...');
+
 		await this.serviceManager.disconnectAllServices();
 
 		await this.server.stop();

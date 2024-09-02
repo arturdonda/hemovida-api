@@ -25,7 +25,7 @@ export class Server extends Component {
 
 		// Configure global pre-router middlewares
 		for (const preRouterMiddleware of MIDDLWARES.GLOBAL.PRE_ROUTER) {
-			preRouterMiddleware(this.express);
+			this.express.use(preRouterMiddleware);
 		}
 
 		// Configure routes
@@ -40,7 +40,7 @@ export class Server extends Component {
 
 		// Configure global post-router middlewares
 		for (const postRouterMiddleware of MIDDLWARES.GLOBAL.POST_ROUTER) {
-			postRouterMiddleware(this.express);
+			this.express.use(postRouterMiddleware);
 		}
 	}
 

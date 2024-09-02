@@ -1,6 +1,8 @@
-import { IGlobalPreRouterMiddleware } from '@main/protocols';
+import { IPreRouterMiddleware } from '@main/protocols';
 import { urlencoded } from 'express';
 
-export const configureUrlEncodedBody: IGlobalPreRouterMiddleware = function (app) {
-	app.use(urlencoded({ extended: true }));
+export const configureUrlEncodedBody: IPreRouterMiddleware = function (req, res, next) {
+	urlencoded({ extended: true });
+
+	next();
 };
