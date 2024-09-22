@@ -7,20 +7,20 @@
 		"resolveJsonModule": true,
 		"typeRoots": ["@types", "./node_modules/@types"],
 		"paths": {
-			"@domain": ["1_domain"],
-			"@domain/*": ["1_domain/*"],
+			"@domain": ["1-domain"],
+			"@domain/*": ["1-domain/*"],
 
-			"@application": ["2_application"],
-			"@application/*": ["2_application/*"],
+			"@application": ["2-application"],
+			"@application/*": ["2-application/*"],
 
-			"@infra": ["3_infra"],
-			"@infra/*": ["3_infra/*"],
+			"@infra": ["3-infra"],
+			"@infra/*": ["3-infra/*"],
 
-			"@presentation": ["4_presentation"],
-			"@presentation/*": ["4_presentation/*"],
+			"@presentation": ["4-presentation"],
+			"@presentation/*": ["4-presentation/*"],
 
-			"@main": ["5_main"],
-			"@main/*": ["5_main/*"],
+			"@main": ["5-main"],
+			"@main/*": ["5-main/*"],
 
 			"@root": [".."],
 			"@root/*": ["../*"]

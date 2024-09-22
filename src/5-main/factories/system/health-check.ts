@@ -1,6 +1,6 @@
 import { IHealthCheckUsecase } from '@application/protocols/use-cases/system';
 import { HealthCheckUsecase } from '@application/use-cases/system';
-import { HealthCheckController } from '@presentation/controllers/system';
+import { HealthCheckController } from '4-presentation/controllers/system';
 import { IControllerFactory } from '@main/protocols';
 
 export const healthCheckControllerFactory: IHealthCheckControllerFactory = serviceManager => {

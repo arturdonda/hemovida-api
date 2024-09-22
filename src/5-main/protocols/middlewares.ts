@@ -1,5 +1,5 @@
 import { Tracer } from '@domain/app';
-import { Controller, HttpResponse } from '@presentation/app';
+import { Controller, HttpResponse } from '4-presentation/app';
 import { Request, Response, NextFunction } from 'express';
 
 export type IPreRouterMiddleware = (req: Request, res: Response, next: NextFunction) => void;

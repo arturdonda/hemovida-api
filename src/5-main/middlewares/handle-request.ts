@@ -1,4 +1,4 @@
-import { HttpRequest } from '@presentation/app';
+import { HttpRequest } from '4-presentation/app';
 import { IHandleRequestMiddleware } from '@main/protocols';
 
 export const handleRequest: IHandleRequestMiddleware = function (controllerFactory) {
