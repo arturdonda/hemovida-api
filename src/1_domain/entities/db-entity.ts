@@ -1,5 +1,5 @@
 import { Entity } from '@domain/app';
-import { randomUUID } from 'crypto';
+import { Uuid } from '@domain/entities';
 
 export abstract class DbEntity<T extends DbEntity.Type> extends Entity<T> {
 	protected _id: DbEntity.Type['id'];
@@ -9,7 +9,7 @@ export abstract class DbEntity<T extends DbEntity.Type> extends Entity<T> {
 	constructor() {
 		super();
 
-		this._id = randomUUID();
+		this._id = Uuid.generate();
 		this._createdAt = new Date();
 		this._updatedAt = this._createdAt;
 	}
