@@ -1,6 +1,6 @@
+import { Entity, Logger, Trace } from '@domain/app';
 import { Uuid } from '@domain/entities';
 import { ProcessNotFoundError } from '@domain/errors';
-import { Entity, Logger, Trace } from '.';
 
 export class Tracer extends Entity<Tracer.Type> {
 	readonly uuid: string;

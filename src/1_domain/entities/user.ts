@@ -1,6 +1,6 @@
-import { DbEntity } from './db-entity';
-import { isCpfValid, isEmailValid } from '@domain/helpers';
+import { DbEntity } from '@domain/entities';
 import { InvalidParamError } from '@domain/errors';
+import { isCpfValid, isEmailValid } from '@domain/helpers';
 
 export class User extends DbEntity<User.Type> {
 	private _firstName: User.Type['firstName'];

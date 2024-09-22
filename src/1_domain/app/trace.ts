@@ -1,4 +1,4 @@
-import { Entity } from '.';
+import { Entity } from '@domain/app';
 
 export class Trace extends Entity<Trace.Type> {
 	private _process: Trace.Type['process'];

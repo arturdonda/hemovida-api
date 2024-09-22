@@ -1,4 +1,4 @@
-import { Logger } from '.';
+import { Logger } from '@domain/app';
 
 export abstract class Component {
 	protected logger: Logger;

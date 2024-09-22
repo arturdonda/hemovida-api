@@ -1,4 +1,4 @@
-import { Tracer } from '.';
+import { Tracer } from '@domain/app';
 
 export abstract class TraceableComponent<Params, Result> {
 	protected abstract main(params: Params): Promise<Result>;
