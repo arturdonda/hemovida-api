@@ -201,12 +201,12 @@ export namespace User {
 		firstName: string;
 		surname: string;
 		preferredName: string | null;
-		cpf: string;
-		phone: string;
 		email: string;
-		password: string;
+		phone: string;
+		cpf: string;
 		birthday: Date;
 		status: Status;
+		password: string;
 	};
 
 	export enum Status {

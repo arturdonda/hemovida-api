@@ -4,7 +4,7 @@ import { RepositoryProtocol } from '../repository';
 export abstract class UserRepositoryProtocol extends RepositoryProtocol<User> {}
 
 export namespace UserRepositoryProtocol {
-	export type UniqueFields = 'id' | 'cpf' | 'email';
+	export type UniqueFields = 'id' | 'cpf' | 'email' | 'phone';
 
 	export type UpdatableFields = 'firstName' | 'surname' | 'preferredName' | 'phone' | 'password' | 'birthday' | 'status' | 'updatedAt';
 
