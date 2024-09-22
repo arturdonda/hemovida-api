@@ -15,7 +15,7 @@ export abstract class DbEntity<T extends DbEntity.Type> extends Entity<T> {
 	}
 
 	static fromJSON(data: any): any {
-		throw new Error('Static method "fromJson" must be implemented by the subclass!');
+		throw new Error('Static method "fromJSON" must be implemented by the subclass!');
 	}
 }
 
