@@ -214,4 +214,14 @@ export namespace User {
 		Pending = 'pending',
 		Inactive = 'inactive',
 	}
+
+	export type UniqueFields = 'id' | 'cpf' | 'email' | 'phone';
+
+	export type UpdatableFields = 'firstName' | 'surname' | 'preferredName' | 'phone' | 'password' | 'birthday' | 'status' | 'updatedAt';
+
+	export type SearchableFields = {
+		name: string;
+		birthday: [Date, Date];
+		status: User.Status;
+	};
 }
