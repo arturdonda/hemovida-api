@@ -1,7 +1,7 @@
-import { IRoute } from '@main/protocols';
+import { RouteProtocol } from '@main/protocols';
 import { healthCheckControllerFactory } from '@main/factories/system';
 
-export const healthCheckRoute: IRoute = {
+export const healthCheckRoute: RouteProtocol = {
 	method: 'get',
 	path: '/',
 	preRouterMiddlewares: [],

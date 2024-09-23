@@ -1,7 +1,7 @@
 import { HealthCheckUsecaseProtocol } from '@application/protocols/use-cases/system';
 import { HealthCheckUsecase } from '@application/use-cases/system';
-import { HealthCheckController } from '4-presentation/controllers/system';
-import { IControllerFactory } from '@main/protocols';
+import { HealthCheckController } from '@presentation/controllers/system';
+import { ControllerFactoryProtocol } from '@main/protocols';
 
 export const healthCheckControllerFactory: HealthCheckControllerFactoryProtocol = serviceManager => {
 	return function (tracer) {
@@ -13,4 +13,4 @@ export const healthCheckControllerFactory: HealthCheckControllerFactoryProtocol 
 	};
 };
 
-type HealthCheckControllerFactoryProtocol = IControllerFactory<HealthCheckUsecaseProtocol.Params, HealthCheckUsecaseProtocol.Result>;
+type HealthCheckControllerFactoryProtocol = ControllerFactoryProtocol<HealthCheckUsecaseProtocol.Params, HealthCheckUsecaseProtocol.Result>;

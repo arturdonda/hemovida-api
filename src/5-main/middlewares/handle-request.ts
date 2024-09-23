@@ -1,7 +1,7 @@
-import { HttpRequest } from '4-presentation/app';
-import { IHandleRequestMiddleware } from '@main/protocols';
+import { HttpRequest } from '@presentation/app';
+import { HandleRequestMiddlewareProtocol } from '@main/protocols';
 
-export const handleRequest: IHandleRequestMiddleware = function (controllerFactory) {
+export const handleRequest: HandleRequestMiddlewareProtocol = function (controllerFactory) {
 	return async function handleRequest(req, res, next) {
 		const controller = controllerFactory(req.tracer);
 

@@ -1,5 +1,5 @@
-import { IRoute } from '@main/protocols';
+import { RouteProtocol } from '@main/protocols';
 import { healthCheckRoute } from './health-check';
 import { notFoundRoute } from './not-found';
 
-export const SYSTEM_ROUTES: IRoute[] = [healthCheckRoute, notFoundRoute];
+export const SYSTEM_ROUTES: RouteProtocol[] = [healthCheckRoute, notFoundRoute];

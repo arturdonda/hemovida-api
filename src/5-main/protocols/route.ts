@@ -1,9 +1,9 @@
-import { IControllerFactory, IPostRouterMiddleware, IPreRouterMiddleware } from '.';
+import { ControllerFactoryProtocol, PostRouterMiddlewareProtocol, PreRouterMiddlewareProtocol } from '@main/protocols';
 
-export type IRoute = {
+export type RouteProtocol = {
 	method: 'get' | 'post' | 'put' | 'delete' | 'patch' | 'options' | 'head';
 	path: string;
-	preRouterMiddlewares: IPreRouterMiddleware[];
-	postRouterMiddlewares: IPostRouterMiddleware[];
-	controllerFactory: IControllerFactory<any, any>;
+	preRouterMiddlewares: PreRouterMiddlewareProtocol[];
+	postRouterMiddlewares: PostRouterMiddlewareProtocol[];
+	controllerFactory: ControllerFactoryProtocol<any, any>;
 };

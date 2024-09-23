@@ -1,7 +1,7 @@
-import { IRoute } from '@main/protocols';
+import { RouteProtocol } from '@main/protocols';
 import { notFoundControllerFactory } from '@main/factories/system';
 
-export const notFoundRoute: IRoute = {
+export const notFoundRoute: RouteProtocol = {
 	method: 'get',
 	path: '*',
 	preRouterMiddlewares: [],
