@@ -1,8 +1,8 @@
 import { Usecase } from '@domain/app';
 
-export abstract class IHealthCheckUsecase extends Usecase<IHealthCheckUsecase.Params, IHealthCheckUsecase.Result> {}
+export abstract class HealthCheckUsecaseProtocol extends Usecase<HealthCheckUsecaseProtocol.Params, HealthCheckUsecaseProtocol.Result> {}
 
-export namespace IHealthCheckUsecase {
+export namespace HealthCheckUsecaseProtocol {
 	export type Params = void;
 	export type Result = { env: string; version: string };
 }

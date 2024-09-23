@@ -1,12 +1,12 @@
-import { IHealthCheckUsecase } from '@application/protocols/use-cases/system';
+import { HealthCheckUsecaseProtocol } from '@application/protocols/use-cases/system';
 import { version } from '@root/package.json';
 
-export class HealthCheckUsecase extends IHealthCheckUsecase {
-	protected validateParams(params: IHealthCheckUsecase.Params): void {
+export class HealthCheckUsecase extends HealthCheckUsecaseProtocol {
+	protected validateParams(params: HealthCheckUsecaseProtocol.Params): void {
 		return;
 	}
 
-	protected main(params: IHealthCheckUsecase.Params): Promise<IHealthCheckUsecase.Result> {
+	protected main(params: HealthCheckUsecaseProtocol.Params): Promise<HealthCheckUsecaseProtocol.Result> {
 		return Promise.resolve({ env: process.env.ENV, version });
 	}
 }

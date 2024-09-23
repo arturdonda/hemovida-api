@@ -1,11 +1,11 @@
-import { INotFoundUsecase } from '@application/protocols/use-cases/system';
+import { NotFoundUsecaseProtocol } from '@application/protocols/use-cases/system';
 
-export class NotFoundUsecase extends INotFoundUsecase {
-	protected validateParams(params: INotFoundUsecase.Params): void {
+export class NotFoundUsecase extends NotFoundUsecaseProtocol {
+	protected validateParams(params: NotFoundUsecaseProtocol.Params): void {
 		return;
 	}
 
-	protected main(params: INotFoundUsecase.Params): Promise<void> {
+	protected main(params: NotFoundUsecaseProtocol.Params): Promise<void> {
 		return Promise.resolve();
 	}
 }
