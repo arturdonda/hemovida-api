@@ -1,10 +1,10 @@
 import { Entity } from '@domain/app';
 import { DbEntity } from '@domain/entities';
 
-export class PageParams<T extends DbEntity<any>> extends Entity<PageParams.Type<any>> {
+export class PageParams<T extends DbEntity<any, any, any, any>> extends Entity<PageParams.Type<any>> {
 	private readonly DEFAULT_PAGE_NUMBER: PageParams.Type<T>['pageNumber'] = 1;
 	private readonly DEFAULT_PAGE_SIZE: PageParams.Type<T>['pageSize'] = 50;
-	private readonly DEFAULT_SORT_BY: PageParams.Type<T>['sortBy'] = 'createdAt' as keyof T;
+	private readonly DEFAULT_SORT_BY: PageParams.Type<T>['sortBy'] = 'id' as keyof T;
 	private readonly DEFAULT_SORT_DIRECTION: PageParams.Type<T>['sortDirection'] = PageParams.SortDirection.DESC;
 
 	private readonly _pageNumber: PageParams.Type<T>['pageNumber'] | undefined;
@@ -12,7 +12,7 @@ export class PageParams<T extends DbEntity<any>> extends Entity<PageParams.Type<
 	private readonly _sortBy: PageParams.Type<T>['sortBy'] | undefined;
 	private readonly _sortDirection: PageParams.Type<T>['sortDirection'] | undefined;
 
-	constructor(private readonly params: PageParams.ConstructorParams<T>) {
+	constructor(params: PageParams.ConstructorParams<T>) {
 		super();
 
 		this._pageNumber = params.pageNumber ?? params.default?.pageNumber;
@@ -37,15 +37,15 @@ export class PageParams<T extends DbEntity<any>> extends Entity<PageParams.Type<
 		return this._sortDirection ?? this.DEFAULT_SORT_DIRECTION;
 	}
 
-	toJSON(): PageParams.Type<any> {
+	toJSON(): PageParams.Type<T> {
 		return { pageNumber: this.pageNumber, pageSize: this.pageSize, sortBy: this.sortBy, sortDirection: this.sortDirection };
 	}
 }
 
 export namespace PageParams {
-	export type ConstructorParams<T extends DbEntity<any>> = Partial<Type<T> & { default: Partial<Type<T>> }>;
+	export type ConstructorParams<T extends DbEntity<any, any, any, any>> = Partial<Type<T> & { default: Partial<Type<T>> }>;
 
-	export type Type<T extends DbEntity<any>> = {
+	export type Type<T extends DbEntity<any, any, any, any>> = {
 		pageNumber: number;
 		pageSize: number;
 		sortBy: keyof T;

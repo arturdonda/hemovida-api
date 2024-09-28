@@ -2,7 +2,7 @@ import { Entity } from '@domain/app';
 import { DbEntity } from '@domain/entities';
 import { PageParams } from '@application/helpers';
 
-export class PaginatedResult<T extends DbEntity<any>> extends Entity<PaginatedResult.Type<any>> {
+export class PaginatedResult<T extends DbEntity<any, any, any, any>> extends Entity<PaginatedResult.Type<any>> {
 	private _pageParams: PaginatedResult.ConstructorParams<T>['pageParams'];
 	private _totalCount: PaginatedResult.ConstructorParams<T>['totalCount'];
 	private _data: PaginatedResult.ConstructorParams<T>['data'];
@@ -55,9 +55,9 @@ export class PaginatedResult<T extends DbEntity<any>> extends Entity<PaginatedRe
 }
 
 export namespace PaginatedResult {
-	export type ConstructorParams<T extends DbEntity<any>> = { pageParams: PageParams<T>; totalCount: number; data: T[] };
+	export type ConstructorParams<T extends DbEntity<any, any, any, any>> = { pageParams: PageParams<T>; totalCount: number; data: T[] };
 
-	export type Type<T extends DbEntity<any>> = PageParams.Type<T> & {
+	export type Type<T extends DbEntity<any, any, any, any>> = PageParams.Type<T> & {
 		totalCount: number;
 		data: T[];
 	};
