@@ -2,7 +2,7 @@ import { DbEntity } from '@domain/entities';
 import { InvalidParamError } from '@domain/errors';
 import { isCpfValid, isEmailValid } from '@domain/helpers';
 
-export class User extends DbEntity<User.Type> {
+export class User extends DbEntity<User.Type, User.UniqueFields, User.SearchableFields, User.UpdatableFields> {
 	private _firstName: User.Type['firstName'];
 	private _surname: User.Type['surname'];
 	private _preferredName: User.Type['preferredName'];
@@ -152,6 +152,10 @@ export class User extends DbEntity<User.Type> {
 
 		throw new InvalidParamError('email');
 	}
+
+	static validate(data: unknown): void {
+		throw new Error('Not implemented yet!');
+	}
 	//#endregion Validation
 
 	//#region JSON Parse
@@ -172,7 +176,7 @@ export class User extends DbEntity<User.Type> {
 		};
 	}
 
-	static override fromJSON(data: User.Type): User {
+	static fromJSON(data: User.Type): User {
 		const user = new User({
 			firstName: data.firstName,
 			surname: data.surname,
@@ -217,11 +221,11 @@ export namespace User {
 
 	export type UniqueFields = 'id' | 'cpf' | 'email' | 'phone';
 
-	export type UpdatableFields = 'firstName' | 'surname' | 'preferredName' | 'phone' | 'password' | 'birthday' | 'status' | 'updatedAt';
-
 	export type SearchableFields = {
 		name: string;
 		birthday: [Date, Date];
 		status: User.Status;
 	};
+
+	export type UpdatableFields = 'firstName' | 'surname' | 'preferredName' | 'phone' | 'password' | 'birthday' | 'status' | 'updatedAt';
 }

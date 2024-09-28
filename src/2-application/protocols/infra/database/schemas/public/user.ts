@@ -1,31 +1,39 @@
 import { User } from '@domain/entities';
 import { RepositoryProtocol } from '../repository';
+import { PaginatedResult } from '@application/helpers';
 
-export abstract class UserRepositoryProtocol extends RepositoryProtocol<User> {}
+export abstract class UserRepositoryProtocol extends RepositoryProtocol<User, User.UniqueFields, User.SearchableFields, User.UpdatableFields> {}
 
-export namespace UserRepositoryProtocol {
-	export namespace GetAll {
-		export type Params = RepositoryProtocol.GetAll.Params<User, User.SearchableFields>;
-		export type Result = RepositoryProtocol.GetAll.Result<User>;
+export class UserRepository extends UserRepositoryProtocol {
+	private readonly users: User[];
+
+	constructor() {
+		super();
+
+		this.users = [];
 	}
 
-	export namespace GetOne {
-		export type Params = RepositoryProtocol.GetOne.Params<User, User.UniqueFields>;
-		export type Result = RepositoryProtocol.GetOne.Result<User>;
+	async getAll(params: RepositoryProtocol.GetAll.Params<User, User.SearchableFields>): RepositoryProtocol.GetAll.Result<User> {
+		const users = await Promise.resolve(this.users.filter(u => u.name.toLowerCase().startsWith(params.name?.toLowerCase() ?? '')));
+
+		const page = new PaginatedResult({ pageParams: params.pageParams, totalCount: users.length, data: users.slice(0, params.pageParams.pageSize) });
+
+		return page;
 	}
 
-	export namespace Create {
-		export type Params = RepositoryProtocol.Create.Params<User>;
-		export type Result = RepositoryProtocol.Create.Result<User>;
+	getOne(params: Partial<Pick<User, User.UniqueFields>>): RepositoryProtocol.GetOne.Result<User> {
+		throw new Error('Method not implemented.');
 	}
 
-	export namespace Update {
-		export type Params = RepositoryProtocol.Update.Params<User, User.UpdatableFields>;
-		export type Result = RepositoryProtocol.Update.Result<User>;
+	create(params: User): RepositoryProtocol.Create.Result<User> {
+		throw new Error('Method not implemented.');
 	}
 
-	export namespace Delete {
-		export type Params = RepositoryProtocol.Delete.Params<User, User.UniqueFields>;
-		export type Result = RepositoryProtocol.Delete.Result;
+	update(params: RepositoryProtocol.Update.Params<User, User.UpdatableFields>): RepositoryProtocol.Update.Result<User> {
+		throw new Error('Method not implemented.');
+	}
+
+	delete(params: Partial<Pick<User, User.UniqueFields>>): RepositoryProtocol.Delete.Result {
+		throw new Error('Method not implemented.');
 	}
 }
