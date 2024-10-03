@@ -1,6 +1,5 @@
 import { User } from '@domain/entities';
 import { UserRepositoryProtocol } from '@application/protocols/infra/database/schemas/public/user';
-import { RepositoryProtocol } from '@application/protocols/infra/database/schemas/repository';
 import { PageParams, PaginatedResult } from '@application/helpers';
 import { UserDto } from '../../dtos/public';
 
@@ -11,7 +10,7 @@ export class UserRepository extends UserRepositoryProtocol {
 		super();
 	}
 
-	getAll({ pageParams, searchableFields }: RepositoryProtocol.GetAll.Params<User, User.SearchableFields>): RepositoryProtocol.GetAll.Result<User> {
+	getAll({ pageParams, searchableFields }: UserRepositoryProtocol.GetAll.Params): UserRepositoryProtocol.GetAll.Result {
 		return this.users
 			.findAndCountAll({
 				col: `${this.users.name}.id`,
@@ -23,11 +22,11 @@ export class UserRepository extends UserRepositoryProtocol {
 			.then(result => new PaginatedResult({ pageParams, totalCount: result.count, data: result.rows.map(UserDto.map) }));
 	}
 
-	getOne({ uniqueFields }: RepositoryProtocol.GetOne.Params<User, User.UniqueFields>): RepositoryProtocol.GetOne.Result<User> {
+	getOne({ uniqueFields }: UserRepositoryProtocol.GetOne.Params): UserRepositoryProtocol.GetOne.Result {
 		return this.users.findOne({ where: this.makeWhereClause(uniqueFields) }).then(result => (result ? UserDto.map(result) : null));
 	}
 
-	create(user: User): RepositoryProtocol.Create.Result<User> {
+	create(user: User): UserRepositoryProtocol.Create.Result {
 		return this.users
 			.create({
 				id: user.id,
@@ -46,7 +45,7 @@ export class UserRepository extends UserRepositoryProtocol {
 			.then(UserDto.map);
 	}
 
-	update(user: RepositoryProtocol.Update.Params<User>): RepositoryProtocol.Update.Result<User> {
+	update(user: UserRepositoryProtocol.Update.Params): UserRepositoryProtocol.Update.Result {
 		return this.users
 			.update(
 				{
@@ -64,7 +63,7 @@ export class UserRepository extends UserRepositoryProtocol {
 			.then(([count, rows]) => UserDto.map(rows[0]));
 	}
 
-	delete(user: RepositoryProtocol.Delete.Params<User>): RepositoryProtocol.Delete.Result {
+	delete(user: UserRepositoryProtocol.Delete.Params): UserRepositoryProtocol.Delete.Result {
 		return this.users.update({ status: User.Status.Inactive }, { where: this.makeWhereClause({ id: user.id }), returning: false }).then(() => {});
 	}
 
