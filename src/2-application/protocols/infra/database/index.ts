@@ -1,7 +1,10 @@
+import { Component } from '@domain/app';
 import { Schemas } from './schemas';
 
-export abstract class DatabaseProtocol {
-	constructor(protected readonly constructorParams: DatabaseProtocol.ConstructorParams) {}
+export abstract class DatabaseProtocol extends Component {
+	constructor(protected readonly constructorParams: DatabaseProtocol.ConstructorParams) {
+		super();
+	}
 
 	abstract connect(params: DatabaseProtocol.Connect.Params): DatabaseProtocol.Connect.Result;
 

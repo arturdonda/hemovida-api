@@ -4,7 +4,7 @@ import { DbEntity } from '@domain/entities';
 export class PageParams<T extends DbEntity<any, any, any, any>> extends Entity<PageParams.Type<any>> {
 	private readonly DEFAULT_PAGE_NUMBER: PageParams.Type<T>['pageNumber'] = 1;
 	private readonly DEFAULT_PAGE_SIZE: PageParams.Type<T>['pageSize'] = 50;
-	private readonly DEFAULT_SORT_BY: PageParams.Type<T>['sortBy'] = 'id' as keyof T;
+	private readonly DEFAULT_SORT_BY: PageParams.Type<T>['sortBy'] = 'id' as string & keyof T;
 	private readonly DEFAULT_SORT_DIRECTION: PageParams.Type<T>['sortDirection'] = PageParams.SortDirection.DESC;
 
 	private readonly _pageNumber: PageParams.Type<T>['pageNumber'] | undefined;
@@ -15,8 +15,8 @@ export class PageParams<T extends DbEntity<any, any, any, any>> extends Entity<P
 	constructor(params: PageParams.ConstructorParams<T>) {
 		super();
 
-		this._pageNumber = params.pageNumber ?? params.default?.pageNumber;
-		this._pageSize = params.pageSize ?? params.default?.pageSize;
+		this._pageNumber = this.validatePageNumber(params.pageNumber ?? params.default?.pageNumber);
+		this._pageSize = this.validatePageSize(params.pageSize ?? params.default?.pageSize);
 		this._sortBy = params.sortBy ?? params.default?.sortBy;
 		this._sortDirection = params.sortDirection ?? params.default?.sortDirection;
 	}
@@ -40,6 +40,22 @@ export class PageParams<T extends DbEntity<any, any, any, any>> extends Entity<P
 	toJSON(): PageParams.Type<T> {
 		return { pageNumber: this.pageNumber, pageSize: this.pageSize, sortBy: this.sortBy, sortDirection: this.sortDirection };
 	}
+
+	//#region Validation
+	private validatePageNumber(pageNumber: unknown): number | undefined {
+		if (typeof pageNumber !== 'number') return undefined;
+		if (pageNumber <= 0) return undefined;
+
+		return pageNumber;
+	}
+
+	private validatePageSize(pageSize: unknown): number | undefined {
+		if (typeof pageSize !== 'number') return undefined;
+		if (pageSize <= 0) return undefined;
+
+		return pageSize;
+	}
+	//#endregion Validation
 }
 
 export namespace PageParams {
@@ -48,7 +64,7 @@ export namespace PageParams {
 	export type Type<T extends DbEntity<any, any, any, any>> = {
 		pageNumber: number;
 		pageSize: number;
-		sortBy: keyof T;
+		sortBy: string & keyof T;
 		sortDirection: SortDirection;
 	};
 

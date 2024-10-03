@@ -16,6 +16,6 @@ CREATE TABLE IF NOT EXISTS users (
 	,phone			VARCHAR(11)		NOT	NULL	UNIQUE
 	,cpf			VARCHAR(11)		NOT	NULL	UNIQUE
 	,birthday		DATE			NOT	NULL
-	,status			user_status		NOT	NULL	DEFAULT	'active'
+	,status			user_status		NOT	NULL	DEFAULT	'pending'
 	,password		VARCHAR			NOT	NULL
 );
