@@ -19,3 +19,11 @@ CREATE TABLE IF NOT EXISTS users (
 	,status			user_status		NOT	NULL	DEFAULT	'pending'
 	,password		VARCHAR			NOT	NULL
 );
+
+CREATE INDEX IF NOT EXISTS users_index_first_name		ON users(first_name);
+CREATE INDEX IF NOT EXISTS users_index_surname			ON users(surname);
+CREATE INDEX IF NOT EXISTS users_index_preferred_name	ON users(preferred_name);
+CREATE INDEX IF NOT EXISTS users_index_email			ON users(email);
+CREATE INDEX IF NOT EXISTS users_index_cpf				ON users(cpf);
+CREATE INDEX IF NOT EXISTS users_index_birthday			ON users(birthday);
+CREATE INDEX IF NOT EXISTS users_index_status			ON users(status);
