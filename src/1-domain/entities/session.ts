@@ -16,8 +16,8 @@ export class Session extends DbEntity<Session.Type, Session.UniqueFields, Sessio
 		super();
 
 		this._userId = params.userId;
-		this._refreshToken = Uuid.generate();
-		this._csrfToken = Uuid.generate();
+		this._refreshToken = Uuid.v4();
+		this._csrfToken = Uuid.v4();
 		this._ipAddress = this.validateIpAddress(params.ipAddress);
 		this._userAgent = params.userAgent;
 		this._expiresAt = new Date(this._createdAt.valueOf() + Session.lifetime);

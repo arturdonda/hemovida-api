@@ -3,15 +3,15 @@ import { Uuid } from '@domain/entities';
 import { ProcessNotFoundError } from '@domain/errors';
 
 export class Tracer extends Entity<Tracer.Type> {
-	readonly uuid: string;
+	readonly id: string;
 	readonly logger: Logger;
 	readonly traceHistory: Map<string, Trace>;
 
 	constructor(private readonly logTraces?: boolean) {
 		super();
 
-		this.uuid = Uuid.generate();
-		this.logger = new Logger(this.uuid);
+		this.id = Uuid.v7();
+		this.logger = new Logger(this.id);
 		this.traceHistory = new Map<string, Trace>();
 	}
 
@@ -58,14 +58,13 @@ export class Tracer extends Entity<Tracer.Type> {
 	}
 
 	toJSON(): Tracer.Type {
-		return { uuid: this.uuid, traceHistory: [...this.traceHistory.values()] };
-		// return { uuid: this.uuid, traceHistory: [...this.traceHistory.values()].map(trace => trace.toJSON()) };
+		return { id: this.id, traceHistory: [...this.traceHistory.values()] };
 	}
 }
 
 export namespace Tracer {
 	export type Type = {
-		uuid: string;
+		id: string;
 		traceHistory: Trace.Type[];
 	};
 }

@@ -14,7 +14,7 @@ export abstract class DbEntity<
 	constructor() {
 		super();
 
-		this._id = Uuid.generate();
+		this._id = Uuid.v7();
 		this._createdAt = new Date();
 		this._updatedAt = this._createdAt;
 	}

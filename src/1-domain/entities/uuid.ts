@@ -1,7 +1,11 @@
-import { randomUUID } from 'crypto';
+import uuid from 'uuid';
 
 export class Uuid {
-	static generate() {
-		return randomUUID();
+	static v4() {
+		return uuid.v4();
+	}
+
+	static v7() {
+		return uuid.v7();
 	}
 }
