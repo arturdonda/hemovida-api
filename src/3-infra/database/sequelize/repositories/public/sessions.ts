@@ -54,7 +54,7 @@ export class SessionRepository extends SessionRepositoryProtocol {
 				},
 				{ where: this.makeWhereClause({ id: session.id }), returning: true }
 			)
-			.then(([count, rows]) => SessionDto.map(rows[0]));
+			.then(([count, rows]) => (count === 0 ? null : SessionDto.map(rows[0])));
 	}
 
 	delete(session: SessionRepositoryProtocol.Delete.Params): SessionRepositoryProtocol.Delete.Result {

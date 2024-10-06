@@ -35,7 +35,7 @@ export namespace RepositoryProtocol {
 
 	export namespace Update {
 		export type Params<T extends DbEntity<any, any, any, any>> = T;
-		export type Result<T extends DbEntity<any, any, any, any>> = Promise<T>;
+		export type Result<T extends DbEntity<any, any, any, any>> = Promise<T | null>;
 	}
 
 	export namespace Delete {

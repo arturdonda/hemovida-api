@@ -60,7 +60,7 @@ export class UserRepository extends UserRepositoryProtocol {
 				},
 				{ where: this.makeWhereClause({ id: user.id }), returning: true }
 			)
-			.then(([count, rows]) => UserDto.map(rows[0]));
+			.then(([count, rows]) => (count === 0 ? null : UserDto.map(rows[0])));
 	}
 
 	delete(user: UserRepositoryProtocol.Delete.Params): UserRepositoryProtocol.Delete.Result {
