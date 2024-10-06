@@ -62,16 +62,12 @@ export class SessionRepository extends SessionRepositoryProtocol {
 	}
 
 	//#region Clauses
-	private makeWhereClause(filters: Partial<Pick<Session, Session.UniqueFields> & Session.SearchableFields>): WhereOptions {
+	private makeWhereClause(filters: Partial<Session.SearchableFields>): WhereOptions {
 		const whereOptions: WhereOptions = [];
 
-		// Unique Fields
 		if (filters.id) whereOptions.push({ id: filters.id });
-		if (filters.refreshToken) whereOptions.push({ refresh_token: filters.refreshToken });
-		if (filters.csrfToken) whereOptions.push({ csrf_token: filters.csrfToken });
-
-		// Searchable Fields
 		if (filters.userId) whereOptions.push({ user_id: filters.userId });
+		if (filters.refreshToken) whereOptions.push({ refresh_token: filters.refreshToken });
 		if (filters.expiresAt !== undefined) whereOptions.push({ expires_at: { [Op.between]: filters.expiresAt } });
 		if (filters.lastUsedAt !== undefined) whereOptions.push({ last_used_at: { [Op.between]: filters.lastUsedAt } });
 		if (filters.isRevoked !== undefined) whereOptions.push({ is_revoked: filters.isRevoked });

@@ -177,6 +177,7 @@ export namespace Session {
 	export type UniqueFields = 'id' | 'refreshToken' | 'csrfToken';
 
 	export type SearchableFields = {
+		id: string;
 		userId: string;
 		refreshToken: string;
 		expiresAt: [Date, Date];

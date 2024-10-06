@@ -97,28 +97,13 @@ export class User extends DbEntity<User.Type, User.UniqueFields, User.Searchable
 		this._updatedAt = new Date();
 	}
 
-	set cpf(cpf: User.Type['cpf']) {
-		this._cpf = this.validateCpf(cpf);
-		this._updatedAt = new Date();
-	}
-
 	set phone(phone: User.Type['phone']) {
 		this._phone = this.validatePhone(phone);
 		this._updatedAt = new Date();
 	}
 
-	set email(email: User.Type['email']) {
-		this._email = this.validateEmail(email);
-		this._updatedAt = new Date();
-	}
-
 	set password(password: User.Type['password']) {
 		this._password = password;
-		this._updatedAt = new Date();
-	}
-
-	set birthday(birthday: User.Type['birthday']) {
-		this._birthday = birthday;
 		this._updatedAt = new Date();
 	}
 
@@ -222,10 +207,13 @@ export namespace User {
 	export type UniqueFields = 'id' | 'cpf' | 'email' | 'phone';
 
 	export type SearchableFields = {
+		id: string;
 		name: string;
+		email: string;
+		cpf: string;
 		birthday: [Date, Date];
 		status: User.Status;
 	};
 
-	export type UpdatableFields = 'firstName' | 'surname' | 'preferredName' | 'phone' | 'password' | 'birthday' | 'status' | 'updatedAt';
+	export type UpdatableFields = 'firstName' | 'surname' | 'preferredName' | 'phone' | 'password' | 'status' | 'updatedAt';
 }

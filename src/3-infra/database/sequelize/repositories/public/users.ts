@@ -68,17 +68,10 @@ export class UserRepository extends UserRepositoryProtocol {
 	}
 
 	//#region Clauses
-	private makeWhereClause(filters: Partial<Pick<User, User.UniqueFields> & User.SearchableFields>): WhereOptions {
+	private makeWhereClause(filters: Partial<User.SearchableFields>): WhereOptions {
 		const whereOptions: WhereOptions = [];
 
-		// Unique Fields
 		if (filters.id) whereOptions.push({ id: filters.id });
-		if (filters.cpf) whereOptions.push({ cpf: filters.cpf });
-		if (filters.email) whereOptions.push({ email: filters.email });
-		if (filters.phone) whereOptions.push({ phone: filters.email });
-
-		// Searchable Fields
-		if (filters.birthday !== undefined) whereOptions.push({ birthday: { [Op.between]: filters.birthday } });
 		if (filters.name !== undefined)
 			whereOptions.push({
 				[Op.or]: [
@@ -87,6 +80,9 @@ export class UserRepository extends UserRepositoryProtocol {
 					{ preferred_name: { [Op.iLike]: `%${filters.name}%` } },
 				],
 			});
+		if (filters.email) whereOptions.push({ email: filters.email });
+		if (filters.cpf) whereOptions.push({ cpf: filters.cpf });
+		if (filters.birthday !== undefined) whereOptions.push({ birthday: { [Op.between]: filters.birthday } });
 		if (filters.status !== undefined) whereOptions.push({ status: filters.status.toString() });
 
 		return whereOptions;
