@@ -74,6 +74,7 @@ export class PostgresDatabase extends DatabaseProtocol {
 
 		return {
 			Public: {
+				Invite: new Repositories.Public.Invite(this.schemas.Public.Invite),
 				Session: new Repositories.Public.Session(this.schemas.Public.Session),
 				User: new Repositories.Public.User(this.schemas.Public.User),
 			},

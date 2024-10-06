@@ -212,7 +212,7 @@ export namespace User {
 		email: string;
 		cpf: string;
 		birthday: [Date, Date];
-		status: User.Status;
+		status: Status;
 	};
 
 	export type UpdatableFields = 'firstName' | 'surname' | 'preferredName' | 'phone' | 'password' | 'status' | 'updatedAt';

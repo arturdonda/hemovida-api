@@ -9,9 +9,9 @@ CREATE TABLE IF NOT EXISTS users (
 	,created_at		TIMESTAMP		NOT	NULL
 	,updated_at		TIMESTAMP		NOT	NULL
 
-	,first_name		VARCHAR(50)		NOT	NULL
-	,surname		VARCHAR(50)		NOT	NULL
-	,preferred_name	VARCHAR(100)
+	,first_name		VARCHAR(25)		NOT	NULL
+	,surname		VARCHAR(25)		NOT	NULL
+	,preferred_name	VARCHAR(25)
 	,email			VARCHAR(50)		NOT	NULL	UNIQUE
 	,phone			VARCHAR(11)		NOT	NULL	UNIQUE
 	,cpf			VARCHAR(11)		NOT	NULL	UNIQUE
