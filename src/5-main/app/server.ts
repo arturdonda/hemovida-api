@@ -2,6 +2,7 @@ import { Component } from '@domain/app';
 import { MIDDLWARES } from '@main/middlewares';
 import { ROUTES } from '@main/routes';
 import { ServiceManager } from '@main/app';
+
 import express, { Express, Router } from 'express';
 import { Server as HttpServer } from 'http';
 

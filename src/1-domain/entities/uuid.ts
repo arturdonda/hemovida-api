@@ -1,11 +1,11 @@
-import uuid from 'uuid';
+import { v4, v7 } from 'uuid';
 
 export class Uuid {
 	static v4() {
-		return uuid.v4();
+		return v4();
 	}
 
 	static v7() {
-		return uuid.v7();
+		return v7();
 	}
 }
