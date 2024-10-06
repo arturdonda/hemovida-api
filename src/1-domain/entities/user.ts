@@ -161,18 +161,18 @@ export class User extends DbEntity<User.Type, User.UniqueFields, User.Searchable
 	//#region JSON Parse
 	toJSON(): User.Type {
 		return {
-			id: this._id,
-			firstName: this._firstName,
-			surname: this._surname,
-			preferredName: this._preferredName,
-			cpf: this._cpf,
-			phone: this._phone,
-			email: this._email,
-			password: this._password,
-			birthday: this._birthday,
-			status: this._status,
-			createdAt: this._createdAt,
-			updatedAt: this._updatedAt,
+			id: this.id,
+			firstName: this.firstName,
+			surname: this.surname,
+			preferredName: this.preferredName,
+			cpf: this.cpf,
+			phone: this.phone,
+			email: this.email,
+			password: this.password,
+			birthday: this.birthday,
+			status: this.status,
+			createdAt: this.createdAt,
+			updatedAt: this.updatedAt,
 		};
 	}
 

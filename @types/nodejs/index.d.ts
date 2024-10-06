@@ -6,5 +6,7 @@ declare namespace NodeJS {
 
 		PORT: number;
 		HOST: string;
+
+		SESSION_LIFETIME_IN_MS: number;
 	}
 }
