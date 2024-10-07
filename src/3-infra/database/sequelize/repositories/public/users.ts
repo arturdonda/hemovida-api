@@ -10,7 +10,7 @@ export class UserRepository extends UserRepositoryProtocol {
 		super();
 	}
 
-	getAll({ pageParams, searchableFields }: UserRepositoryProtocol.GetAll.Params): UserRepositoryProtocol.GetAll.Result {
+	getAll({ pageParams, ...searchableFields }: UserRepositoryProtocol.GetAll.Params): UserRepositoryProtocol.GetAll.Result {
 		return this.users
 			.findAndCountAll({
 				col: `${this.users.name}.id`,
@@ -22,7 +22,7 @@ export class UserRepository extends UserRepositoryProtocol {
 			.then(result => new PaginatedResult({ pageParams, totalCount: result.count, data: result.rows.map(UserDto.map) }));
 	}
 
-	getOne({ uniqueFields }: UserRepositoryProtocol.GetOne.Params): UserRepositoryProtocol.GetOne.Result {
+	getOne(uniqueFields: UserRepositoryProtocol.GetOne.Params): UserRepositoryProtocol.GetOne.Result {
 		return this.users.findOne({ where: this.makeWhereClause(uniqueFields) }).then(result => (result ? UserDto.map(result) : null));
 	}
 

@@ -10,7 +10,7 @@ export class InviteRepository extends InviteRepositoryProtocol {
 		super();
 	}
 
-	getAll({ pageParams, searchableFields }: InviteRepositoryProtocol.GetAll.Params): InviteRepositoryProtocol.GetAll.Result {
+	getAll({ pageParams, ...searchableFields }: InviteRepositoryProtocol.GetAll.Params): InviteRepositoryProtocol.GetAll.Result {
 		return this.invites
 			.findAndCountAll({
 				col: `${this.invites.name}.id`,
@@ -22,7 +22,7 @@ export class InviteRepository extends InviteRepositoryProtocol {
 			.then(result => new PaginatedResult({ pageParams, totalCount: result.count, data: result.rows.map(InviteDto.map) }));
 	}
 
-	getOne({ uniqueFields }: InviteRepositoryProtocol.GetOne.Params): InviteRepositoryProtocol.GetOne.Result {
+	getOne(uniqueFields: InviteRepositoryProtocol.GetOne.Params): InviteRepositoryProtocol.GetOne.Result {
 		return this.invites.findOne({ where: this.makeWhereClause(uniqueFields) }).then(result => (result ? InviteDto.map(result) : null));
 	}
 

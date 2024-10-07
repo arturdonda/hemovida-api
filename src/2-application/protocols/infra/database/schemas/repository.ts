@@ -16,15 +16,14 @@ export abstract class RepositoryProtocol<
 
 export namespace RepositoryProtocol {
 	export namespace GetAll {
-		export type Params<T extends DbEntity<any, any, any, any>, SearchableFields extends Record<string, unknown>> = {
+		export type Params<T extends DbEntity<any, any, any, any>, SearchableFields extends Record<string, unknown>> = Partial<SearchableFields> & {
 			pageParams: PageParams<T>;
-			searchableFields: Partial<SearchableFields>;
 		};
 		export type Result<T extends DbEntity<any, any, any, any>> = Promise<PaginatedResult<T>>;
 	}
 
 	export namespace GetOne {
-		export type Params<T extends DbEntity<any, any, any, any>, UniqueFields extends keyof T> = { uniqueFields: Partial<Pick<T, UniqueFields>> };
+		export type Params<T extends DbEntity<any, any, any, any>, UniqueFields extends keyof T> = Partial<Pick<T, UniqueFields>>;
 		export type Result<T extends DbEntity<any, any, any, any>> = Promise<T | null>;
 	}
 

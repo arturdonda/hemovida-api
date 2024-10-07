@@ -10,7 +10,7 @@ export class SessionRepository extends SessionRepositoryProtocol {
 		super();
 	}
 
-	getAll({ pageParams, searchableFields }: SessionRepositoryProtocol.GetAll.Params): SessionRepositoryProtocol.GetAll.Result {
+	getAll({ pageParams, ...searchableFields }: SessionRepositoryProtocol.GetAll.Params): SessionRepositoryProtocol.GetAll.Result {
 		return this.sessions
 			.findAndCountAll({
 				col: `${this.sessions.name}.id`,
@@ -22,7 +22,7 @@ export class SessionRepository extends SessionRepositoryProtocol {
 			.then(result => new PaginatedResult({ pageParams, totalCount: result.count, data: result.rows.map(SessionDto.map) }));
 	}
 
-	getOne({ uniqueFields }: SessionRepositoryProtocol.GetOne.Params): SessionRepositoryProtocol.GetOne.Result {
+	getOne(uniqueFields: SessionRepositoryProtocol.GetOne.Params): SessionRepositoryProtocol.GetOne.Result {
 		return this.sessions.findOne({ where: this.makeWhereClause(uniqueFields) }).then(result => (result ? SessionDto.map(result) : null));
 	}
 
