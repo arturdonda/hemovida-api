@@ -23,7 +23,7 @@ export class UserRepository extends UserRepositoryProtocol {
 	}
 
 	getOne(uniqueFields: UserRepositoryProtocol.GetOne.Params): UserRepositoryProtocol.GetOne.Result {
-		return this.users.findOne({ where: this.makeWhereClause(uniqueFields) }).then(result => (result ? UserDto.map(result) : null));
+		return this.users.findOne({ where: this.makeWhereClause(uniqueFields, 'OR') }).then(result => (result ? UserDto.map(result) : null));
 	}
 
 	create(user: User): UserRepositoryProtocol.Create.Result {
@@ -68,8 +68,8 @@ export class UserRepository extends UserRepositoryProtocol {
 	}
 
 	//#region Clauses
-	private makeWhereClause(filters: Partial<User.SearchableFields>): WhereOptions {
-		const whereOptions: WhereOptions = [];
+	private makeWhereClause(filters: Partial<User.SearchableFields>, operator: 'AND' | 'OR' = 'AND'): WhereOptions {
+		const whereOptions: WhereOptions[] = [];
 
 		if (filters.id) whereOptions.push({ id: filters.id });
 		if (filters.name !== undefined)
@@ -85,7 +85,7 @@ export class UserRepository extends UserRepositoryProtocol {
 		if (filters.birthday !== undefined) whereOptions.push({ birthday: { [Op.between]: filters.birthday } });
 		if (filters.status !== undefined) whereOptions.push({ status: filters.status.toString() });
 
-		return whereOptions;
+		return { [operator === 'AND' ? Op.and : Op.or]: whereOptions };
 	}
 
 	private makeOrderClause(pageParams: PageParams<User>): Order {

@@ -23,7 +23,7 @@ export class InviteRepository extends InviteRepositoryProtocol {
 	}
 
 	getOne(uniqueFields: InviteRepositoryProtocol.GetOne.Params): InviteRepositoryProtocol.GetOne.Result {
-		return this.invites.findOne({ where: this.makeWhereClause(uniqueFields) }).then(result => (result ? InviteDto.map(result) : null));
+		return this.invites.findOne({ where: this.makeWhereClause(uniqueFields, 'OR') }).then(result => (result ? InviteDto.map(result) : null));
 	}
 
 	create(invite: Invite): InviteRepositoryProtocol.Create.Result {
@@ -59,8 +59,8 @@ export class InviteRepository extends InviteRepositoryProtocol {
 	}
 
 	//#region Clauses
-	private makeWhereClause(filters: Partial<Invite.SearchableFields>): WhereOptions {
-		const whereOptions: WhereOptions = [];
+	private makeWhereClause(filters: Partial<Invite.SearchableFields>, operator: 'AND' | 'OR' = 'AND'): WhereOptions {
+		const whereOptions: WhereOptions[] = [];
 
 		if (filters.id) whereOptions.push({ id: filters.id });
 		if (filters.name !== undefined)
@@ -72,7 +72,7 @@ export class InviteRepository extends InviteRepositoryProtocol {
 		if (filters.status) whereOptions.push({ status: filters.status });
 		if (filters.invitedBy) whereOptions.push({ invitedBy: filters.invitedBy });
 
-		return whereOptions;
+		return { [operator === 'AND' ? Op.and : Op.or]: whereOptions };
 	}
 
 	private makeOrderClause(pageParams: PageParams<Invite>): Order {

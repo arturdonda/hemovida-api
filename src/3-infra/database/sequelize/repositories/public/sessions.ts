@@ -23,7 +23,7 @@ export class SessionRepository extends SessionRepositoryProtocol {
 	}
 
 	getOne(uniqueFields: SessionRepositoryProtocol.GetOne.Params): SessionRepositoryProtocol.GetOne.Result {
-		return this.sessions.findOne({ where: this.makeWhereClause(uniqueFields) }).then(result => (result ? SessionDto.map(result) : null));
+		return this.sessions.findOne({ where: this.makeWhereClause(uniqueFields, 'OR') }).then(result => (result ? SessionDto.map(result) : null));
 	}
 
 	create(session: Session): SessionRepositoryProtocol.Create.Result {
@@ -62,8 +62,8 @@ export class SessionRepository extends SessionRepositoryProtocol {
 	}
 
 	//#region Clauses
-	private makeWhereClause(filters: Partial<Session.SearchableFields>): WhereOptions {
-		const whereOptions: WhereOptions = [];
+	private makeWhereClause(filters: Partial<Session.SearchableFields>, operator: 'AND' | 'OR' = 'AND'): WhereOptions {
+		const whereOptions: WhereOptions[] = [];
 
 		if (filters.id) whereOptions.push({ id: filters.id });
 		if (filters.userId) whereOptions.push({ user_id: filters.userId });
@@ -72,7 +72,7 @@ export class SessionRepository extends SessionRepositoryProtocol {
 		if (filters.lastUsedAt !== undefined) whereOptions.push({ last_used_at: { [Op.between]: filters.lastUsedAt } });
 		if (filters.isRevoked !== undefined) whereOptions.push({ is_revoked: filters.isRevoked });
 
-		return whereOptions;
+		return { [operator === 'AND' ? Op.and : Op.or]: whereOptions };
 	}
 
 	private makeOrderClause(pageParams: PageParams<Session>): Order {
