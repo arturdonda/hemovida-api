@@ -1,6 +1,7 @@
 import { Invite } from '@domain/entities';
 import { InviteRepositoryProtocol } from '@application/protocols/infra/database/schemas/public/invite';
 import { PageParams, PaginatedResult } from '@application/helpers';
+import { NotFoundError } from '@application/errors';
 import { InviteDto } from '../../dtos/public';
 
 import { Model, ModelStatic, Op, Order, WhereOptions } from 'sequelize';
@@ -51,7 +52,11 @@ export class InviteRepository extends InviteRepositoryProtocol {
 				},
 				{ where: this.makeWhereClause({ id: invite.id }), returning: true }
 			)
-			.then(([count, rows]) => (count === 0 ? null : InviteDto.map(rows[0])));
+			.then(([count, rows]) => {
+				if (count === 0) throw new NotFoundError('Invite');
+
+				return InviteDto.map(rows[0]);
+			});
 	}
 
 	delete(invite: InviteRepositoryProtocol.Delete.Params): InviteRepositoryProtocol.Delete.Result {

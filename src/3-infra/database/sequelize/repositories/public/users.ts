@@ -1,6 +1,7 @@
 import { User } from '@domain/entities';
 import { UserRepositoryProtocol } from '@application/protocols/infra/database/schemas/public/user';
 import { PageParams, PaginatedResult } from '@application/helpers';
+import { NotFoundError } from '@application/errors';
 import { UserDto } from '../../dtos/public';
 
 import { Model, ModelStatic, Op, Order, WhereOptions } from 'sequelize';
@@ -60,7 +61,11 @@ export class UserRepository extends UserRepositoryProtocol {
 				},
 				{ where: this.makeWhereClause({ id: user.id }), returning: true }
 			)
-			.then(([count, rows]) => (count === 0 ? null : UserDto.map(rows[0])));
+			.then(([count, rows]) => {
+				if (count === 0) throw new NotFoundError('User');
+
+				return UserDto.map(rows[0]);
+			});
 	}
 
 	delete(user: UserRepositoryProtocol.Delete.Params): UserRepositoryProtocol.Delete.Result {

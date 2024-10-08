@@ -1,6 +1,7 @@
 import { Session } from '@domain/entities';
 import { SessionRepositoryProtocol } from '@application/protocols/infra/database/schemas/public/session';
 import { PageParams, PaginatedResult } from '@application/helpers';
+import { NotFoundError } from '@application/errors';
 import { SessionDto } from '../../dtos/public';
 
 import { Model, ModelStatic, Op, Order, WhereOptions } from 'sequelize';
@@ -54,7 +55,11 @@ export class SessionRepository extends SessionRepositoryProtocol {
 				},
 				{ where: this.makeWhereClause({ id: session.id }), returning: true }
 			)
-			.then(([count, rows]) => (count === 0 ? null : SessionDto.map(rows[0])));
+			.then(([count, rows]) => {
+				if (count === 0) throw new NotFoundError('Session');
+
+				return SessionDto.map(rows[0]);
+			});
 	}
 
 	delete(session: SessionRepositoryProtocol.Delete.Params): SessionRepositoryProtocol.Delete.Result {
