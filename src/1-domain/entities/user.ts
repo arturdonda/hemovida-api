@@ -19,9 +19,9 @@ export class User extends DbEntity<User.Type, User.UniqueFields, User.Searchable
 		this._firstName = params.firstName;
 		this._surname = params.surname;
 		this._preferredName = params.preferredName;
-		this._cpf = this.validateCpf(params.cpf);
-		this._phone = this.validatePhone(params.phone);
-		this._email = this.validateEmail(params.email);
+		this._cpf = User.validateCpf(params.cpf);
+		this._phone = User.validatePhone(params.phone);
+		this._email = User.validateEmail(params.email);
 		this._password = params.password;
 		this._birthday = params.birthday;
 		this._status = User.Status.Pending;
@@ -98,12 +98,12 @@ export class User extends DbEntity<User.Type, User.UniqueFields, User.Searchable
 	}
 
 	set phone(phone: User.Type['phone']) {
-		this._phone = this.validatePhone(phone);
+		this._phone = User.validatePhone(phone);
 		this._updatedAt = new Date();
 	}
 
 	set password(password: User.Type['password']) {
-		this._password = password;
+		this._password = User.validatePassword(password);
 		this._updatedAt = new Date();
 	}
 
@@ -114,7 +114,7 @@ export class User extends DbEntity<User.Type, User.UniqueFields, User.Searchable
 	//#endregion Setters
 
 	//#region Validation
-	private validateCpf(cpf: User.Type['cpf']): User.Type['cpf'] {
+	static validateCpf(cpf: User.Type['cpf']): User.Type['cpf'] {
 		cpf = cpf.replace(/\D/g, '');
 
 		if (isCpfValid(cpf)) return cpf;
@@ -122,7 +122,7 @@ export class User extends DbEntity<User.Type, User.UniqueFields, User.Searchable
 		throw new InvalidParamError('cpf');
 	}
 
-	private validatePhone(phone: User.Type['phone']): User.Type['phone'] {
+	static validatePhone(phone: User.Type['phone']): User.Type['phone'] {
 		phone = phone.replace(/\D/g, '');
 
 		if (phone.length !== 11) throw new InvalidParamError('phone', 'deve ter 11 caracteres');
@@ -130,7 +130,7 @@ export class User extends DbEntity<User.Type, User.UniqueFields, User.Searchable
 		return phone;
 	}
 
-	private validateEmail(email: User.Type['email']): User.Type['email'] {
+	static validateEmail(email: User.Type['email']): User.Type['email'] {
 		email = email.trim().toLowerCase();
 
 		if (isEmailValid(email)) return email;
@@ -138,8 +138,15 @@ export class User extends DbEntity<User.Type, User.UniqueFields, User.Searchable
 		throw new InvalidParamError('email');
 	}
 
-	static validate(data: unknown): void {
-		throw new Error('Not implemented yet!');
+	static validatePassword(password: User.Type['password']): User.Type['password'] {
+		return password;
+	}
+
+	static validate(params: User.ConstructorParams): void {
+		User.validateCpf(params.cpf);
+		User.validatePhone(params.phone);
+		User.validateEmail(params.email);
+		User.validatePassword(params.password);
 	}
 	//#endregion Validation
 

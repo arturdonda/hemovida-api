@@ -55,6 +55,14 @@ export class Invite extends DbEntity<Invite.Type, Invite.UniqueFields, Invite.Se
 		return this._expiresAt;
 	}
 
+	get isExpired() {
+		return this._expiresAt >= new Date();
+	}
+
+	get isValid() {
+		return this._status === Invite.Status.Sent && this.isExpired === false;
+	}
+
 	static get lifetime() {
 		return process.env.SESSION_LIFETIME_IN_MS;
 	}
@@ -68,8 +76,8 @@ export class Invite extends DbEntity<Invite.Type, Invite.UniqueFields, Invite.Se
 	//#endregion Setters
 
 	//#region Validation
-	static validate(data: unknown): void {
-		throw new Error('Not implemented yet!');
+	static validate(params: Invite.ConstructorParams): void {
+		return;
 	}
 	//#endregion Validation
 

@@ -18,7 +18,7 @@ export class Session extends DbEntity<Session.Type, Session.UniqueFields, Sessio
 		this._userId = params.userId;
 		this._refreshToken = Uuid.v4();
 		this._csrfToken = Uuid.v4();
-		this._ipAddress = this.validateIpAddress(params.ipAddress);
+		this._ipAddress = Session.validateIpAddress(params.ipAddress);
 		this._userAgent = params.userAgent;
 		this._expiresAt = new Date(this._createdAt.valueOf() + Session.lifetime);
 		this._lastUsedAt = this._createdAt;
@@ -98,7 +98,7 @@ export class Session extends DbEntity<Session.Type, Session.UniqueFields, Sessio
 	//#endregion Methods
 
 	//#region Validation
-	private validateIpAddress(ipAddress: unknown): Session.Type['ipAddress'] {
+	static validateIpAddress(ipAddress: unknown): Session.Type['ipAddress'] {
 		if (typeof ipAddress !== 'string') throw new InvalidParamError('ipAddress');
 
 		const parts = ipAddress.split('.');
@@ -118,8 +118,8 @@ export class Session extends DbEntity<Session.Type, Session.UniqueFields, Sessio
 		return ipAddress;
 	}
 
-	static validate(data: unknown): void {
-		throw new Error('Not implemented yet!');
+	static validate(params: Session.ConstructorParams): void {
+		Session.validateIpAddress(params.ipAddress);
 	}
 	//#endregion Validation
 
