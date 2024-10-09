@@ -4,7 +4,7 @@ import { DbEntity } from '@domain/entities';
 export class PageParams<T extends DbEntity<any, any, any, any>> extends Entity<PageParams.Type<any>> {
 	private readonly DEFAULT_PAGE_NUMBER: PageParams.Type<T>['pageNumber'] = 1;
 	private readonly DEFAULT_PAGE_SIZE: PageParams.Type<T>['pageSize'] = 50;
-	private readonly DEFAULT_SORT_BY: PageParams.Type<T>['sortBy'] = 'id' as string & keyof T;
+	private readonly DEFAULT_SORT_BY: PageParams.Type<T>['sortBy'] = 'id' as PageParams.Type<T>['sortBy'];
 	private readonly DEFAULT_SORT_DIRECTION: PageParams.Type<T>['sortDirection'] = PageParams.SortDirection.DESC;
 
 	private readonly _pageNumber: PageParams.Type<T>['pageNumber'] | undefined;
@@ -64,7 +64,7 @@ export namespace PageParams {
 	export type Type<T extends DbEntity<any, any, any, any>> = {
 		pageNumber: number;
 		pageSize: number;
-		sortBy: string & keyof T;
+		sortBy: Exclude<string & keyof T, 'toJSON'>;
 		sortDirection: SortDirection;
 	};
 
