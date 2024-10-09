@@ -5,5 +5,5 @@ export abstract class GetOneUserUsecaseProtocol extends Usecase<GetOneUserUsecas
 
 export namespace GetOneUserUsecaseProtocol {
 	export type Params = Partial<Pick<User, User.UniqueFields>>;
-	export type Result = User | null;
+	export type Result = User;
 }
