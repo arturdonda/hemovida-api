@@ -5,5 +5,5 @@ export abstract class GetOneSessionUsecaseProtocol extends Usecase<GetOneSession
 
 export namespace GetOneSessionUsecaseProtocol {
 	export type Params = Partial<Pick<Session, Session.UniqueFields>>;
-	export type Result = Session | null;
+	export type Result = Session;
 }
