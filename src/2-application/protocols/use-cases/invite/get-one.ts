@@ -5,5 +5,5 @@ export abstract class GetOneInviteUsecaseProtocol extends Usecase<GetOneInviteUs
 
 export namespace GetOneInviteUsecaseProtocol {
 	export type Params = Partial<Pick<Invite, Invite.UniqueFields>>;
-	export type Result = Invite | null;
+	export type Result = Invite;
 }
