@@ -40,9 +40,9 @@ export class CreateUserUsecase extends CreateUserUsecaseProtocol {
 
 		if (user === null) return;
 
-		if (user.cpf === cpf) throw new AlreadyRegisteredError('User', 'cpf');
-		if (user.email === email) throw new AlreadyRegisteredError('User', 'email');
+		if (user.cpf === cpf) throw new AlreadyRegisteredError(User, 'cpf');
+		if (user.email === email) throw new AlreadyRegisteredError(User, 'email');
 
-		throw new AlreadyRegisteredError('User', 'phone');
+		throw new AlreadyRegisteredError(User, 'phone');
 	}
 }
