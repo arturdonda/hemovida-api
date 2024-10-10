@@ -56,7 +56,7 @@ export class SessionRepository extends SessionRepositoryProtocol {
 				{ where: this.makeWhereClause({ id: session.id }), returning: true }
 			)
 			.then(([count, rows]) => {
-				if (count === 0) throw new NotFoundError('Session');
+				if (count === 0) throw new NotFoundError(Session);
 
 				return SessionDto.map(rows[0]);
 			});

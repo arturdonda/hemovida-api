@@ -16,7 +16,7 @@ export class GetOneInviteUsecase extends GetOneInviteUsecaseProtocol {
 	protected async main({ id }: Partial<Pick<Invite, Invite.UniqueFields>>): Promise<Invite> {
 		const invite = await this.inviteRepository.getOne({ id });
 
-		if (invite === null) throw new NotFoundError('Invite');
+		if (invite === null) throw new NotFoundError(Invite);
 
 		return invite;
 	}

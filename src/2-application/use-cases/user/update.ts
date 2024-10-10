@@ -16,7 +16,7 @@ export class UpdateUserUsecase extends UpdateUserUsecaseProtocol {
 	protected async main({ id, ...updatableFields }: UpdateUserUsecaseProtocol.Params): Promise<UpdateUserUsecaseProtocol.Result> {
 		const user = await this.userRepository.getOne({ id });
 
-		if (user === null) throw new NotFoundError('User');
+		if (user === null) throw new NotFoundError(User);
 
 		if (user.status === User.Status.Pending) throw new UserIsPendingError();
 		if (user.status === User.Status.Inactive) throw new UserIsInactiveError();

@@ -53,7 +53,7 @@ export class InviteRepository extends InviteRepositoryProtocol {
 				{ where: this.makeWhereClause({ id: invite.id }), returning: true }
 			)
 			.then(([count, rows]) => {
-				if (count === 0) throw new NotFoundError('Invite');
+				if (count === 0) throw new NotFoundError(Invite);
 
 				return InviteDto.map(rows[0]);
 			});

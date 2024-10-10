@@ -1,6 +1,6 @@
 {
 	"name": "hemovida-api",
-	"version": "1.0.44",
+	"version": "1.0.45",
 	"description": "API for the Hemovida platform",
 	"main": "src/index.ts",
 	"scripts": {

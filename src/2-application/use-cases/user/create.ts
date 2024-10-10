@@ -1,5 +1,5 @@
 import { Tracer } from '@domain/app';
-import { User } from '@domain/entities';
+import { Invite, User } from '@domain/entities';
 import { InvalidParamError } from '@domain/errors';
 import { CreateUserUsecaseProtocol } from '@application/protocols/use-cases/user';
 import { DatabaseProtocol, HashServiceProtocol } from '@application/protocols/infra';
@@ -22,7 +22,7 @@ export class CreateUserUsecase extends CreateUserUsecaseProtocol {
 	protected async main({ inviteId, ...userParams }: CreateUserUsecaseProtocol.Params): Promise<CreateUserUsecaseProtocol.Result> {
 		const invite = await this.inviteRepository.getOne({ id: inviteId });
 
-		if (invite === null) throw new NotFoundError('Invite');
+		if (invite === null) throw new NotFoundError(Invite);
 
 		if (invite.isValid === false) throw new InvalidInviteError(invite);
 

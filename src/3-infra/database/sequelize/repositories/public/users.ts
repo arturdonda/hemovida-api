@@ -62,7 +62,7 @@ export class UserRepository extends UserRepositoryProtocol {
 				{ where: this.makeWhereClause({ id: user.id }), returning: true }
 			)
 			.then(([count, rows]) => {
-				if (count === 0) throw new NotFoundError('User');
+				if (count === 0) throw new NotFoundError(User);
 
 				return UserDto.map(rows[0]);
 			});
