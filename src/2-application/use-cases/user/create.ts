@@ -3,7 +3,7 @@ import { User } from '@domain/entities';
 import { InvalidParamError } from '@domain/errors';
 import { CreateUserUsecaseProtocol } from '@application/protocols/use-cases/user';
 import { DatabaseProtocol, HashServiceProtocol } from '@application/protocols/infra';
-import { InvalidInviteError, NotFoundError, UserAlreadyRegisteredError } from '@application/errors';
+import { InvalidInviteError, NotFoundError, AlreadyRegisteredError } from '@application/errors';
 
 export class CreateUserUsecase extends CreateUserUsecaseProtocol {
 	constructor(
@@ -40,9 +40,9 @@ export class CreateUserUsecase extends CreateUserUsecaseProtocol {
 
 		if (user === null) return;
 
-		if (user.cpf === cpf) throw new UserAlreadyRegisteredError('cpf');
-		if (user.email === email) throw new UserAlreadyRegisteredError('email');
+		if (user.cpf === cpf) throw new AlreadyRegisteredError('User', 'cpf');
+		if (user.email === email) throw new AlreadyRegisteredError('User', 'email');
 
-		throw new UserAlreadyRegisteredError('phone');
+		throw new AlreadyRegisteredError('User', 'phone');
 	}
 }
