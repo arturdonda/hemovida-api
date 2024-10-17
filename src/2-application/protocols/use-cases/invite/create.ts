@@ -1,9 +1,9 @@
 import { Usecase } from '@domain/app';
-import { Invite } from '@domain/entities';
+import { Invite, User } from '@domain/entities';
 
 export abstract class CreateInviteUsecaseProtocol extends Usecase<CreateInviteUsecaseProtocol.Params, CreateInviteUsecaseProtocol.Result> {}
 
 export namespace CreateInviteUsecaseProtocol {
-	export type Params = Invite.ConstructorParams;
+	export type Params = Omit<Invite.ConstructorParams, 'invitedBy'> & { inviter: User };
 	export type Result = Invite;
 }
