@@ -39,7 +39,7 @@ export const INVITE_MODEL: ModelAttributes = {
 		defaultValue: 'created',
 	},
 
-	invited_by: {
+	created_by: {
 		type: DataTypes.UUID,
 		allowNull: false,
 		references: {
@@ -48,8 +48,28 @@ export const INVITE_MODEL: ModelAttributes = {
 		},
 	},
 
+	sent_at: {
+		type: DataTypes.DATE,
+		allowNull: true,
+	},
+
+	sent_by: {
+		type: DataTypes.UUID,
+		allowNull: true,
+	},
+
+	revoked_at: {
+		type: DataTypes.DATE,
+		allowNull: true,
+	},
+
+	revoked_by: {
+		type: DataTypes.UUID,
+		allowNull: true,
+	},
+
 	expires_at: {
 		type: DataTypes.DATE,
-		allowNull: false,
+		allowNull: true,
 	},
 };

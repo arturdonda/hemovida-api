@@ -13,7 +13,11 @@ export class InviteDto {
 			surname: databaseInvite.surname,
 			email: databaseInvite.email,
 			status: databaseInvite.status,
-			invitedBy: databaseInvite.invited_by,
+			createdBy: databaseInvite.created_by,
+			sentAt: databaseInvite.sent_at,
+			sentBy: databaseInvite.sent_by,
+			revokedAt: databaseInvite.revoked_at,
+			revokedBy: databaseInvite.revoked_by,
 			expiresAt: databaseInvite.expires_at,
 		});
 
