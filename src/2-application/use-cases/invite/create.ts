@@ -14,24 +14,24 @@ export class CreateInviteUsecase extends CreateInviteUsecaseProtocol {
 		super(tracer);
 	}
 
-	protected validateParams({ inviter, ...params }: CreateInviteUsecaseProtocol.Params): void {
-		return Invite.validate({ ...params, invitedBy: inviter.id });
+	protected validateParams({ user, ...params }: CreateInviteUsecaseProtocol.Params): void {
+		return Invite.validate({ ...params, createdBy: user.id });
 	}
 
-	protected async main({ inviter, ...params }: CreateInviteUsecaseProtocol.Params): Promise<CreateInviteUsecaseProtocol.Result> {
-		const user = await this.userRepository.getOne({ email: params.email });
+	protected async main({ user, ...params }: CreateInviteUsecaseProtocol.Params): Promise<CreateInviteUsecaseProtocol.Result> {
+		const userExists = await this.userRepository.getOne({ email: params.email });
 
-		if (user !== null) throw new AlreadyRegisteredError(User, 'email');
+		if (userExists !== null) throw new AlreadyRegisteredError(User, 'email');
 
 		const inviteExists = await this.inviteRepository.getOne({ email: params.email });
 
 		if (inviteExists !== null) throw new AlreadyRegisteredError(Invite, 'email');
 
-		const invite = new Invite({ ...params, invitedBy: inviter.id });
+		const invite = new Invite({ ...params, createdBy: user.id });
 
 		await this.sendInviteEmail(invite);
 
-		invite.status = Invite.Status.Sent;
+		invite.markSent(user);
 
 		return this.inviteRepository.create(invite);
 	}

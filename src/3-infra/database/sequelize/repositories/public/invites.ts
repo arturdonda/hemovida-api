@@ -37,7 +37,11 @@ export class InviteRepository extends InviteRepositoryProtocol {
 				surname: invite.surname,
 				email: invite.email,
 				status: invite.status,
-				invited_by: invite.invitedBy,
+				created_by: invite.createdBy,
+				sent_at: invite.sentAt,
+				sent_by: invite.sentBy,
+				revoked_at: invite.revokedAt,
+				revoked_by: invite.revokedBy,
 				expires_at: invite.expiresAt,
 			})
 			.then(InviteDto.map);
@@ -72,10 +76,14 @@ export class InviteRepository extends InviteRepositoryProtocol {
 			whereOptions.push({
 				[Op.or]: [{ first_name: { [Op.iLike]: `%${filters.name}%` } }, { surname: { [Op.iLike]: `%${filters.name}%` } }],
 			});
-
 		if (filters.email) whereOptions.push({ email: filters.email });
 		if (filters.status) whereOptions.push({ status: filters.status });
-		if (filters.invitedBy) whereOptions.push({ invitedBy: filters.invitedBy });
+		if (filters.createdBy) whereOptions.push({ created_by: filters.createdBy });
+		if (filters.sentAt) whereOptions.push({ sent_at: { [Op.between]: filters.sentAt } });
+		if (filters.sentBy) whereOptions.push({ sent_by: filters.sentBy });
+		if (filters.revokedAt) whereOptions.push({ revoked_at: { [Op.between]: filters.revokedAt } });
+		if (filters.revokedBy) whereOptions.push({ revoked_by: filters.revokedBy });
+		if (filters.expiresAt) whereOptions.push({ expires_at: { [Op.between]: filters.expiresAt } });
 
 		return { [operator === 'AND' ? Op.and : Op.or]: whereOptions };
 	}

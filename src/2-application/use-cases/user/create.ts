@@ -24,7 +24,7 @@ export class CreateUserUsecase extends CreateUserUsecaseProtocol {
 
 		if (invite === null) throw new NotFoundError(Invite);
 
-		if (invite.isValid === false) throw new InvalidInviteError(invite);
+		if (invite.status !== Invite.Status.Sent) throw new InvalidInviteError(invite);
 
 		if (invite.email !== userParams.email) throw new InvalidParamError('email', 'must be the same as the invite.');
 
