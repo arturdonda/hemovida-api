@@ -87,7 +87,7 @@ export class UserRepository extends UserRepositoryProtocol {
 			});
 		if (filters.email) whereOptions.push({ email: filters.email });
 		if (filters.cpf) whereOptions.push({ cpf: filters.cpf });
-		if (filters.birthday !== undefined) whereOptions.push({ birthday: { [Op.between]: filters.birthday } });
+		if (filters.birthday !== undefined) whereOptions.push({ birthday: { [Op.contained]: filters.birthday } });
 		if (filters.status !== undefined) whereOptions.push({ status: filters.status.toString() });
 
 		return { [operator === 'AND' ? Op.and : Op.or]: whereOptions };

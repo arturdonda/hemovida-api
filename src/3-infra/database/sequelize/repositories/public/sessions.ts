@@ -73,8 +73,8 @@ export class SessionRepository extends SessionRepositoryProtocol {
 		if (filters.id) whereOptions.push({ id: filters.id });
 		if (filters.userId) whereOptions.push({ user_id: filters.userId });
 		if (filters.refreshToken) whereOptions.push({ refresh_token: filters.refreshToken });
-		if (filters.expiresAt !== undefined) whereOptions.push({ expires_at: { [Op.between]: filters.expiresAt } });
-		if (filters.lastUsedAt !== undefined) whereOptions.push({ last_used_at: { [Op.between]: filters.lastUsedAt } });
+		if (filters.expiresAt !== undefined) whereOptions.push({ expires_at: { [Op.contained]: filters.expiresAt } });
+		if (filters.lastUsedAt !== undefined) whereOptions.push({ last_used_at: { [Op.contained]: filters.lastUsedAt } });
 		if (filters.isRevoked !== undefined) whereOptions.push({ is_revoked: filters.isRevoked });
 
 		return { [operator === 'AND' ? Op.and : Op.or]: whereOptions };

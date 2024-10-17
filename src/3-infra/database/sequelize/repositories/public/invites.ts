@@ -77,13 +77,13 @@ export class InviteRepository extends InviteRepositoryProtocol {
 				[Op.or]: [{ first_name: { [Op.iLike]: `%${filters.name}%` } }, { surname: { [Op.iLike]: `%${filters.name}%` } }],
 			});
 		if (filters.email) whereOptions.push({ email: filters.email });
-		if (filters.status) whereOptions.push({ status: filters.status });
+		if (filters.status) whereOptions.push({ status: filters.status.toString() });
 		if (filters.createdBy) whereOptions.push({ created_by: filters.createdBy });
-		if (filters.sentAt) whereOptions.push({ sent_at: { [Op.between]: filters.sentAt } });
+		if (filters.sentAt) whereOptions.push({ sent_at: { [Op.contained]: filters.sentAt } });
 		if (filters.sentBy) whereOptions.push({ sent_by: filters.sentBy });
-		if (filters.revokedAt) whereOptions.push({ revoked_at: { [Op.between]: filters.revokedAt } });
+		if (filters.revokedAt) whereOptions.push({ revoked_at: { [Op.contained]: filters.revokedAt } });
 		if (filters.revokedBy) whereOptions.push({ revoked_by: filters.revokedBy });
-		if (filters.expiresAt) whereOptions.push({ expires_at: { [Op.between]: filters.expiresAt } });
+		if (filters.expiresAt) whereOptions.push({ expires_at: { [Op.contained]: filters.expiresAt } });
 
 		return { [operator === 'AND' ? Op.and : Op.or]: whereOptions };
 	}
