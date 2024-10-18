@@ -3,6 +3,7 @@ import { Invite, User } from '@domain/entities';
 import { DatabaseProtocol, EmailServiceProtocol } from '@application/protocols/infra';
 import { CreateInviteUsecaseProtocol } from '@application/protocols/use-cases/invite';
 import { AlreadyRegisteredError } from '@application/errors';
+import { createInviteEmail } from '@application/emails';
 
 export class CreateInviteUsecase extends CreateInviteUsecaseProtocol {
 	constructor(
@@ -29,22 +30,12 @@ export class CreateInviteUsecase extends CreateInviteUsecaseProtocol {
 
 		const invite = new Invite({ ...params, createdBy: user.id });
 
-		await this.sendInviteEmail(invite);
+		const inviteEmail = createInviteEmail(invite);
+
+		await this.emailService.send(inviteEmail);
 
 		invite.markSent(user);
 
 		return this.inviteRepository.create(invite);
-	}
-
-	private sendInviteEmail(invite: Invite) {
-		const to = invite.email;
-		const subject = 'Convite para a plataforma Hemovida API';
-		const body = `
-		<p>Ol&aacute; ${invite.firstName} ${invite.surname},</p>
-		<p>Voc&ecirc; foi convidado(a) para participar da plataforma Hemovida API.</p>
-		<p><a href="${process.env.UI_HOST}/invite/${invite.id}">Clique aqui</a> para fazer o seu cadastro.</p>
-		`;
-
-		return this.emailService.send({ to, subject, body });
 	}
 }
