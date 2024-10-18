@@ -77,7 +77,7 @@ export class InviteRepository extends InviteRepositoryProtocol {
 				[Op.or]: [{ first_name: { [Op.iLike]: `%${filters.name}%` } }, { surname: { [Op.iLike]: `%${filters.name}%` } }],
 			});
 		if (filters.email) whereOptions.push({ email: filters.email });
-		if (filters.status) whereOptions.push({ status: filters.status.toString() });
+		if (filters.status) whereOptions.push({ status: filters.status });
 		if (filters.createdBy) whereOptions.push({ created_by: filters.createdBy });
 		if (filters.sentAt) whereOptions.push({ sent_at: { [Op.contained]: filters.sentAt } });
 		if (filters.sentBy) whereOptions.push({ sent_by: filters.sentBy });
