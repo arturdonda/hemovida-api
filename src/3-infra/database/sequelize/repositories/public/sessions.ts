@@ -34,13 +34,12 @@ export class SessionRepository extends SessionRepositoryProtocol {
 				created_at: session.createdAt,
 				updated_at: session.updatedAt,
 				user_id: session.userId,
+				status: session.status,
 				refresh_token: session.refreshToken,
 				csrf_token: session.csrfToken,
 				ip_address: session.ipAddress,
-				user_agent: session.userAgent,
 				expires_at: session.expiresAt,
-				last_used_at: session.lastUsedAt,
-				is_revoked: session.isRevoked,
+				metadata: session.metadata,
 			})
 			.then(SessionDto.map);
 	}
@@ -50,8 +49,9 @@ export class SessionRepository extends SessionRepositoryProtocol {
 			.update(
 				{
 					updated_at: session.updatedAt,
-					last_used_at: session.lastUsedAt,
-					is_revoked: session.isRevoked,
+					status: session.status,
+					ip_address: session.ipAddress,
+					metadata: session.metadata,
 				},
 				{ where: this.makeWhereClause({ id: session.id }), returning: true }
 			)
@@ -72,10 +72,10 @@ export class SessionRepository extends SessionRepositoryProtocol {
 
 		if (filters.id) whereOptions.push({ id: filters.id });
 		if (filters.userId) whereOptions.push({ user_id: filters.userId });
+		if (filters.status) whereOptions.push({ status: filters.status });
 		if (filters.refreshToken) whereOptions.push({ refresh_token: filters.refreshToken });
 		if (filters.expiresAt !== undefined) whereOptions.push({ expires_at: { [Op.contained]: filters.expiresAt } });
-		if (filters.lastUsedAt !== undefined) whereOptions.push({ last_used_at: { [Op.contained]: filters.lastUsedAt } });
-		if (filters.isRevoked !== undefined) whereOptions.push({ is_revoked: filters.isRevoked });
+		if (filters.deviceType !== undefined) whereOptions.push({ 'metadata.device.type': filters.deviceType });
 
 		return { [operator === 'AND' ? Op.and : Op.or]: whereOptions };
 	}

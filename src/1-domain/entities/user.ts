@@ -222,5 +222,5 @@ export namespace User {
 		status: Status;
 	};
 
-	export type UpdatableFields = 'firstName' | 'surname' | 'preferredName' | 'phone' | 'password' | 'status' | 'updatedAt';
+	export type UpdatableFields = 'updatedAt' | 'firstName' | 'surname' | 'preferredName' | 'phone' | 'password' | 'status';
 }

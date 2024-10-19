@@ -51,8 +51,8 @@ export class InviteRepository extends InviteRepositoryProtocol {
 		return this.invites
 			.update(
 				{
-					status: invite.status,
 					updated_at: invite.updatedAt,
+					status: invite.status,
 				},
 				{ where: this.makeWhereClause({ id: invite.id }), returning: true }
 			)

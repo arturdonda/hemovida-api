@@ -10,13 +10,12 @@ export class SessionDto {
 			createdAt: databaseSession.created_at,
 			updatedAt: databaseSession.updated_at,
 			userId: databaseSession.user_id,
+			status: databaseSession.status,
 			refreshToken: databaseSession.refresh_token,
 			csrfToken: databaseSession.csrf_token,
 			ipAddress: databaseSession.ip_address,
-			userAgent: databaseSession.user_agent,
 			expiresAt: databaseSession.expires_at,
-			lastUsedAt: databaseSession.last_used_at,
-			isRevoked: databaseSession.is_revoked,
+			metadata: databaseSession.metadata,
 		});
 
 		return session;

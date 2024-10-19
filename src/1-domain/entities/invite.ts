@@ -206,5 +206,5 @@ export namespace Invite {
 		expiresAt: [Date, Date];
 	};
 
-	export type UpdatableFields = 'status' | 'sentAt' | 'sentBy' | 'revokedAt' | 'revokedBy' | 'expiresAt' | 'updatedAt';
+	export type UpdatableFields = 'updatedAt' | 'status' | 'sentAt' | 'sentBy' | 'revokedAt' | 'revokedBy' | 'expiresAt';
 }

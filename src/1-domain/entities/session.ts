@@ -4,25 +4,23 @@ import { Uuid } from './uuid';
 
 export class Session extends DbEntity<Session.Type, Session.UniqueFields, Session.SearchableFields, Session.UpdatableFields> {
 	private _userId: Session.Type['userId'];
+	private _status: Session.Type['status'];
 	private _refreshToken: Session.Type['refreshToken'];
 	private _csrfToken: Session.Type['csrfToken'];
 	private _ipAddress: Session.Type['ipAddress'];
-	private _userAgent: Session.Type['userAgent'];
 	private _expiresAt: Session.Type['expiresAt'];
-	private _lastUsedAt: Session.Type['lastUsedAt'];
-	private _isRevoked: Session.Type['isRevoked'];
+	private _metadata: Session.Type['metadata'];
 
 	constructor(params: Session.ConstructorParams) {
 		super();
 
 		this._userId = params.userId;
+		this._status = Session.Status.Active;
 		this._refreshToken = Uuid.v4();
 		this._csrfToken = Uuid.v4();
 		this._ipAddress = Session.validateIpAddress(params.ipAddress);
-		this._userAgent = params.userAgent;
 		this._expiresAt = new Date(this._createdAt.valueOf() + Session.lifetime);
-		this._lastUsedAt = this._createdAt;
-		this._isRevoked = false;
+		this._metadata = params.metadata;
 	}
 
 	//#region Getters
@@ -42,6 +40,10 @@ export class Session extends DbEntity<Session.Type, Session.UniqueFields, Sessio
 		return this._userId;
 	}
 
+	get status() {
+		return this._status;
+	}
+
 	get refreshToken() {
 		return this._refreshToken;
 	}
@@ -54,28 +56,24 @@ export class Session extends DbEntity<Session.Type, Session.UniqueFields, Sessio
 		return this._ipAddress;
 	}
 
-	get userAgent() {
-		return this._userAgent;
-	}
-
 	get expiresAt() {
 		return this._expiresAt;
 	}
 
-	get lastUsedAt() {
-		return this._lastUsedAt;
+	get metadata() {
+		return this._metadata;
 	}
 
-	get isRevoked() {
-		return this._isRevoked;
+	get isActive() {
+		return this._status === Session.Status.Active;
 	}
 
 	get isExpired() {
-		return this._expiresAt >= new Date();
+		return this._status === Session.Status.Expired || this._expiresAt >= new Date();
 	}
 
-	get isValid() {
-		return this.isRevoked === false && this.isExpired === false;
+	get isRevoked() {
+		return this._status === Session.Status.Revoked;
 	}
 
 	static get lifetime() {
@@ -83,16 +81,16 @@ export class Session extends DbEntity<Session.Type, Session.UniqueFields, Sessio
 	}
 	//#endregion Getters
 
-	//#region Setters
-	set lastUsedAt(lastUsedAt: Session.Type['lastUsedAt']) {
-		this._lastUsedAt = lastUsedAt;
+	//#region Methods
+	update({ ipAddress, metadata }: Pick<Session.Type, 'ipAddress' | 'metadata'>) {
+		this._ipAddress = Session.validateIpAddress(ipAddress);
+		this._metadata = metadata;
+
 		this._updatedAt = new Date();
 	}
-	//#endregion Setters
 
-	//#region Methods
 	revoke() {
-		this._isRevoked = true;
+		this._status = Session.Status.Revoked;
 		this._updatedAt = new Date();
 	}
 	//#endregion Methods
@@ -130,13 +128,12 @@ export class Session extends DbEntity<Session.Type, Session.UniqueFields, Sessio
 			createdAt: this.createdAt,
 			updatedAt: this.updatedAt,
 			userId: this.userId,
+			status: this.status,
 			refreshToken: this.refreshToken,
 			csrfToken: this.csrfToken,
 			ipAddress: this.ipAddress,
-			userAgent: this.userAgent,
 			expiresAt: this.expiresAt,
-			lastUsedAt: this.lastUsedAt,
-			isRevoked: this.isRevoked,
+			metadata: this.metadata,
 		};
 	}
 
@@ -144,34 +141,51 @@ export class Session extends DbEntity<Session.Type, Session.UniqueFields, Sessio
 		const session = new Session({
 			userId: data.userId,
 			ipAddress: data.ipAddress,
-			userAgent: data.userAgent,
+			metadata: data.metadata,
 		});
 
 		session._id = data.id;
 		session._createdAt = data.createdAt;
 		session._updatedAt = data.updatedAt;
+		session._status = data.status;
 		session._refreshToken = data.refreshToken;
 		session._csrfToken = data.csrfToken;
 		session._expiresAt = data.expiresAt;
-		session._lastUsedAt = data.lastUsedAt;
-		session._isRevoked = data.isRevoked;
 
 		return session;
 	}
 	//#endregion JSON Parse
 }
 export namespace Session {
-	export type ConstructorParams = Pick<Type, 'userId' | 'ipAddress' | 'userAgent'>;
+	export type ConstructorParams = Pick<Type, 'userId' | 'ipAddress' | 'metadata'>;
 
 	export type Type = DbEntity.Type & {
 		userId: string;
+		status: Status;
 		refreshToken: string;
 		csrfToken: string;
 		ipAddress: string;
-		userAgent: string;
 		expiresAt: Date;
-		lastUsedAt: Date;
-		isRevoked: boolean;
+		metadata: Metadata;
+	};
+
+	export enum Status {
+		Active = 'active',
+		Expired = 'expired',
+		Revoked = 'revoked',
+	}
+
+	export type Metadata = {
+		userAgent: string;
+		browser: string;
+		device: { type: string; os: { name: string; version: string } };
+		geolocation: {
+			lat: number;
+			lon: number;
+			city: string;
+			region: { code: string; name: string };
+			country: { code: string; name: string };
+		};
 	};
 
 	export type UniqueFields = 'id' | 'refreshToken' | 'csrfToken';
@@ -179,11 +193,11 @@ export namespace Session {
 	export type SearchableFields = {
 		id: string;
 		userId: string;
+		status: Status;
 		refreshToken: string;
 		expiresAt: [Date, Date];
-		lastUsedAt: [Date, Date];
-		isRevoked: boolean;
+		deviceType: string;
 	};
 
-	export type UpdatableFields = 'lastUsedAt' | 'isRevoked' | 'updatedAt';
+	export type UpdatableFields = 'updatedAt' | 'status' | 'ipAddress' | 'metadata';
 }

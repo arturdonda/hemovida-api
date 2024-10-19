@@ -23,6 +23,12 @@ export const SESSION_MODEL: ModelAttributes = {
 		references: { model: 'users', key: 'id' },
 	},
 
+	status: {
+		type: DataTypes.ENUM('active', 'expired', 'revoked'),
+		allowNull: false,
+		defaultValue: 'active',
+	},
+
 	refresh_token: {
 		type: DataTypes.UUID,
 		allowNull: false,
@@ -40,24 +46,13 @@ export const SESSION_MODEL: ModelAttributes = {
 		allowNull: false,
 	},
 
-	user_agent: {
-		type: DataTypes.TEXT,
-		allowNull: false,
-	},
-
 	expires_at: {
 		type: DataTypes.DATE,
 		allowNull: false,
 	},
 
-	last_used_at: {
-		type: DataTypes.DATE,
+	metadata: {
+		type: DataTypes.JSONB,
 		allowNull: false,
-	},
-
-	is_revoked: {
-		type: DataTypes.BOOLEAN,
-		allowNull: false,
-		defaultValue: false,
 	},
 };
