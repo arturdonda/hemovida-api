@@ -4,6 +4,6 @@ import { Session } from '@domain/entities';
 export abstract class DeleteSessionUsecaseProtocol extends Usecase<DeleteSessionUsecaseProtocol.Params, DeleteSessionUsecaseProtocol.Result> {}
 
 export namespace DeleteSessionUsecaseProtocol {
-	export type Params = Partial<Pick<Session, Session.UniqueFields>>;
+	export type Params = Pick<Session, 'id'>;
 	export type Result = void;
 }
