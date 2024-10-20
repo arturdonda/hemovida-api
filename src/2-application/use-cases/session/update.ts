@@ -3,6 +3,7 @@ import { Session } from '@domain/entities';
 import { DatabaseProtocol, IpLookupServiceProtocol, UserAgentLookupServiceProtocol } from '@application/protocols/infra';
 import { UpdateSessionUsecaseProtocol } from '@application/protocols/use-cases/session';
 import { InvalidSessionError, NotFoundError } from '@application/errors';
+import { createSessionMetadata } from '@application/helpers';
 
 export class UpdateSessionUsecase extends UpdateSessionUsecaseProtocol {
 	constructor(
@@ -25,22 +26,12 @@ export class UpdateSessionUsecase extends UpdateSessionUsecaseProtocol {
 
 		if (session.isActive === false) throw new InvalidSessionError(session);
 
-		const ipData = await this.ipLookupServiceProtocol.lookup(ipAddress);
-
-		const userAgentData = this.userAgentLookupServiceProtocol.lookup(userAgent);
-
-		const metadata: Session.Metadata = {
-			userAgent: userAgentData.userAgent,
-			browser: userAgentData.browserName,
-			device: { type: userAgentData.deviceType, os: { name: userAgentData.deviceOsName, version: userAgentData.deviceOsVersion } },
-			geolocation: {
-				lat: ipData.latitude,
-				lon: ipData.longitude,
-				city: ipData.city,
-				region: { code: ipData.regionCode, name: ipData.regionName },
-				country: { code: ipData.countryCode, name: ipData.countryName },
-			},
-		};
+		const metadata = await createSessionMetadata({
+			ipAddress,
+			userAgent,
+			ipLookupServiceProtocol: this.ipLookupServiceProtocol,
+			userAgentLookupServiceProtocol: this.userAgentLookupServiceProtocol,
+		});
 
 		session.update({ ipAddress, metadata });
 

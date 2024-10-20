@@ -2,6 +2,7 @@ import { Tracer } from '@domain/app';
 import { Session } from '@domain/entities';
 import { DatabaseProtocol, IpLookupServiceProtocol, UserAgentLookupServiceProtocol } from '@application/protocols/infra';
 import { CreateSessionUsecaseProtocol } from '@application/protocols/use-cases/session';
+import { createSessionMetadata } from '@application/helpers';
 
 export class CreateSessionUsecase extends CreateSessionUsecaseProtocol {
 	constructor(
@@ -18,24 +19,14 @@ export class CreateSessionUsecase extends CreateSessionUsecaseProtocol {
 	}
 
 	protected async main({ ipAddress, userAgent, user }: CreateSessionUsecaseProtocol.Params): Promise<CreateSessionUsecaseProtocol.Result> {
-		const ipData = await this.ipLookupServiceProtocol.lookup(ipAddress);
+		const metadata = await createSessionMetadata({
+			ipAddress,
+			userAgent,
+			ipLookupServiceProtocol: this.ipLookupServiceProtocol,
+			userAgentLookupServiceProtocol: this.userAgentLookupServiceProtocol,
+		});
 
-		const userAgentData = this.userAgentLookupServiceProtocol.lookup(userAgent);
-
-		const metadata: Session.Metadata = {
-			userAgent: userAgentData.userAgent,
-			browser: userAgentData.browserName,
-			device: { type: userAgentData.deviceType, os: { name: userAgentData.deviceOsName, version: userAgentData.deviceOsVersion } },
-			geolocation: {
-				lat: ipData.latitude,
-				lon: ipData.longitude,
-				city: ipData.city,
-				region: { code: ipData.regionCode, name: ipData.regionName },
-				country: { code: ipData.countryCode, name: ipData.countryName },
-			},
-		};
-
-		const session = new Session({ ipAddress: ipData.ip, userId: user.id, metadata });
+		const session = new Session({ ipAddress, userId: user.id, metadata });
 
 		return this.sessionRepository.create(session);
 	}
