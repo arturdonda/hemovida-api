@@ -29,8 +29,8 @@ export class UpdateSessionUsecase extends UpdateSessionUsecaseProtocol {
 		const metadata = await createSessionMetadata({
 			ipAddress,
 			userAgent,
-			ipLookupServiceProtocol: this.ipLookupServiceProtocol,
-			userAgentLookupServiceProtocol: this.userAgentLookupServiceProtocol,
+			ipLookupService: this.ipLookupServiceProtocol,
+			userAgentLookupService: this.userAgentLookupServiceProtocol,
 		});
 
 		session.update({ ipAddress, metadata });

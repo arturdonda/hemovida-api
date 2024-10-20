@@ -8,8 +8,8 @@ export class CreateSessionUsecase extends CreateSessionUsecaseProtocol {
 	constructor(
 		tracer: Tracer,
 		private readonly sessionRepository: DatabaseProtocol.Repositories.Public.Session,
-		private readonly ipLookupServiceProtocol: IpLookupServiceProtocol,
-		private readonly userAgentLookupServiceProtocol: UserAgentLookupServiceProtocol
+		private readonly ipLookupService: IpLookupServiceProtocol,
+		private readonly userAgentLookupService: UserAgentLookupServiceProtocol
 	) {
 		super(tracer);
 	}
@@ -22,8 +22,8 @@ export class CreateSessionUsecase extends CreateSessionUsecaseProtocol {
 		const metadata = await createSessionMetadata({
 			ipAddress,
 			userAgent,
-			ipLookupServiceProtocol: this.ipLookupServiceProtocol,
-			userAgentLookupServiceProtocol: this.userAgentLookupServiceProtocol,
+			ipLookupService: this.ipLookupService,
+			userAgentLookupService: this.userAgentLookupService,
 		});
 
 		const session = new Session({ ipAddress, userId: user.id, metadata });

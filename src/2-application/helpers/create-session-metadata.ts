@@ -2,9 +2,9 @@ import { IpLookupServiceProtocol, UserAgentLookupServiceProtocol } from '@applic
 import { Session } from '@domain/entities';
 
 export async function createSessionMetadata(params: CreateSessionMetadataParams) {
-	const ipData = await params.ipLookupServiceProtocol.lookup(params.ipAddress);
+	const ipData = await params.ipLookupService.lookup(params.ipAddress);
 
-	const userAgentData = params.userAgentLookupServiceProtocol.lookup(params.userAgent);
+	const userAgentData = params.userAgentLookupService.lookup(params.userAgent);
 
 	const metadata: Session.Metadata = {
 		userAgent: userAgentData.userAgent,
@@ -25,6 +25,6 @@ export async function createSessionMetadata(params: CreateSessionMetadataParams)
 type CreateSessionMetadataParams = {
 	ipAddress: string;
 	userAgent: string;
-	ipLookupServiceProtocol: IpLookupServiceProtocol;
-	userAgentLookupServiceProtocol: UserAgentLookupServiceProtocol;
+	ipLookupService: IpLookupServiceProtocol;
+	userAgentLookupService: UserAgentLookupServiceProtocol;
 };
