@@ -14,10 +14,10 @@ export class GetAllSessionsUsecase extends GetAllSessionsUsecaseProtocol {
 	}
 
 	protected async main(params: GetAllSessionsUsecaseProtocol.Params): Promise<GetAllSessionsUsecaseProtocol.Result> {
-		const { pageNumber, pageSize, sortBy, sortDirection, ...searchableFields } = params;
+		const { pageNumber, pageSize, sortBy, sortDirection, user, ...searchableFields } = params;
 
 		const pageParams = new PageParams<Session>({ pageNumber, pageSize, sortBy, sortDirection });
 
-		return this.sessionRepository.getAll({ pageParams, ...searchableFields });
+		return this.sessionRepository.getAll({ pageParams, ...searchableFields, userId: user.id });
 	}
 }
