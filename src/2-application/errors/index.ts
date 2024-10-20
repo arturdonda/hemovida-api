@@ -1,4 +1,5 @@
 export * from './already-registered';
+export * from './invalid-credentials';
 export * from './invalid-invite';
 export * from './invalid-session';
 export * from './invalid-user';

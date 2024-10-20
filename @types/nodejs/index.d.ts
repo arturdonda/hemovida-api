@@ -6,8 +6,9 @@ declare namespace NodeJS {
 
 		PORT: number;
 		HOST: string;
+		UI_HOST: string;
 
 		SESSION_LIFETIME_IN_MS: number;
-		UI_HOST: string;
+		ACCESS_TOKEN_LIFETIME_IN_MS: number;
 	}
 }
