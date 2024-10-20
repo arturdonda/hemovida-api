@@ -79,6 +79,18 @@ export class User extends DbEntity<User.Type, User.UniqueFields, User.Searchable
 	get status() {
 		return this._status;
 	}
+
+	get isActive() {
+		return this._status === User.Status.Active;
+	}
+
+	get isInactive() {
+		return this._status === User.Status.Inactive;
+	}
+
+	get isPending() {
+		return this._status === User.Status.Pending;
+	}
 	//#endregion Getters
 
 	//#region Setters

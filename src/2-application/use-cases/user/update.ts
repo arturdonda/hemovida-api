@@ -2,7 +2,7 @@ import { Tracer } from '@domain/app';
 import { User } from '@domain/entities';
 import { UpdateUserUsecaseProtocol } from '@application/protocols/use-cases/user';
 import { DatabaseProtocol } from '@application/protocols/infra';
-import { NotFoundError, UserIsInactiveError, UserIsPendingError } from '@application/errors';
+import { NotFoundError, InvalidUserError } from '@application/errors';
 
 export class UpdateUserUsecase extends UpdateUserUsecaseProtocol {
 	constructor(tracer: Tracer, private readonly userRepository: DatabaseProtocol.Repositories.Public.User) {
@@ -18,13 +18,13 @@ export class UpdateUserUsecase extends UpdateUserUsecaseProtocol {
 
 		if (user === null) throw new NotFoundError(User);
 
-		if (user.status === User.Status.Pending) throw new UserIsPendingError();
-		if (user.status === User.Status.Inactive) throw new UserIsInactiveError();
+		if (user.isActive === false) throw new InvalidUserError(user);
 
 		if (updatableFields.firstName) user.firstName = updatableFields.firstName;
 		if (updatableFields.surname) user.surname = updatableFields.surname;
 		if (updatableFields.preferredName) user.preferredName = updatableFields.preferredName;
 		if (updatableFields.phone) user.phone = updatableFields.phone;
+		if (updatableFields.password) user.password = updatableFields.password;
 
 		return this.userRepository.update(user);
 	}
