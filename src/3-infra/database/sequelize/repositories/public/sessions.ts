@@ -63,7 +63,7 @@ export class SessionRepository extends SessionRepositoryProtocol {
 	}
 
 	delete(session: SessionRepositoryProtocol.Delete.Params): SessionRepositoryProtocol.Delete.Result {
-		return this.sessions.update({ status: Session.Status.Revoked }, { where: this.makeWhereClause({ id: session.id }), returning: false }).then(() => {});
+		return this.sessions.destroy({ where: this.makeWhereClause({ id: session.id }) }).then(() => {});
 	}
 
 	//#region Clauses

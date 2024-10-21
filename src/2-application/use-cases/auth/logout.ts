@@ -18,6 +18,8 @@ export class LogoutUsecase extends LogoutUsecaseProtocol {
 
 		if (session === null) throw new NotFoundError(Session);
 
-		return this.sessionRepository.delete(session);
+		session.revoke();
+
+		await this.sessionRepository.update(session);
 	}
 }
