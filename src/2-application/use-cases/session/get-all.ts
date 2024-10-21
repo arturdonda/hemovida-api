@@ -18,6 +18,6 @@ export class GetAllSessionsUsecase extends GetAllSessionsUsecaseProtocol {
 
 		const pageParams = new PageParams<Session>({ pageNumber, pageSize, sortBy, sortDirection });
 
-		return this.sessionRepository.getAll({ pageParams, ...searchableFields, userId: user.id });
+		return this.sessionRepository.getAll({ pageParams, ...searchableFields, status: Session.Status.Active, userId: user.id });
 	}
 }
