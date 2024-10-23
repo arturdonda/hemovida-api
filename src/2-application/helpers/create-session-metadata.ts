@@ -22,9 +22,8 @@ export async function createSessionMetadata(params: CreateSessionMetadataParams)
 	return metadata;
 }
 
-type CreateSessionMetadataParams = {
-	ipAddress: string;
-	userAgent: string;
-	ipLookupService: IpLookupServiceProtocol;
-	userAgentLookupService: UserAgentLookupServiceProtocol;
-};
+type CreateSessionMetadataParams = Pick<Session, 'ipAddress'> &
+	Pick<Session.Metadata, 'userAgent'> & {
+		ipLookupService: IpLookupServiceProtocol;
+		userAgentLookupService: UserAgentLookupServiceProtocol;
+	};
