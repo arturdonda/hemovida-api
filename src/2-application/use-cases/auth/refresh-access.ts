@@ -2,7 +2,7 @@ import { Tracer } from '@domain/app';
 import { Session } from '@domain/entities';
 import { RefreshAccessUsecaseProtocol } from '@application/protocols/use-cases/auth';
 import { DatabaseProtocol, IpLookupServiceProtocol, TokenServiceProtocol, UserAgentLookupServiceProtocol } from '@application/protocols/infra';
-import { createSessionMetadata } from '@application/helpers';
+import { createAccessToken, createSessionMetadata } from '@application/helpers';
 import { NotFoundError } from '@application/errors';
 
 export class RefreshAccessUsecase extends RefreshAccessUsecaseProtocol {
@@ -36,7 +36,7 @@ export class RefreshAccessUsecase extends RefreshAccessUsecaseProtocol {
 
 		await this.sessionRepository.update(session);
 
-		const accessToken = this.tokenService.encode({ payload: { userId: session.userId }, expiresInMs: process.env.ACCESS_TOKEN_LIFETIME_IN_MS });
+		const accessToken = createAccessToken({ tokenService: this.tokenService, session });
 
 		return { accessToken };
 	}

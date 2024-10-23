@@ -9,7 +9,7 @@ import {
 	UserAgentLookupServiceProtocol,
 } from '@application/protocols/infra';
 import { InvalidCredentialsError } from '@application/errors';
-import { createSessionMetadata } from '@application/helpers';
+import { createAccessToken, createSessionMetadata } from '@application/helpers';
 
 export class LoginUsecase extends LoginUsecaseProtocol {
 	constructor(
@@ -39,7 +39,7 @@ export class LoginUsecase extends LoginUsecaseProtocol {
 
 		const session = await this.createSession({ ipAddress, userAgent, user });
 
-		const accessToken = this.tokenService.encode({ payload: { userId: user.id }, expiresInMs: process.env.ACCESS_TOKEN_LIFETIME_IN_MS });
+		const accessToken = createAccessToken({ tokenService: this.tokenService, session });
 
 		return { user, accessToken, refreshToken: session.refreshToken };
 	}
