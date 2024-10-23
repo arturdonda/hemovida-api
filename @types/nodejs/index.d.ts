@@ -10,5 +10,8 @@ declare namespace NodeJS {
 
 		SESSION_LIFETIME_IN_MS: number;
 		ACCESS_TOKEN_LIFETIME_IN_MS: number;
+
+		EMAIL_SERVICE_AUTH_USER: string;
+		EMAIL_SERVICE_AUTH_PASS: string;
 	}
 }
