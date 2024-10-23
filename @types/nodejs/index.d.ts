@@ -13,5 +13,7 @@ declare namespace NodeJS {
 
 		EMAIL_SERVICE_AUTH_USER: string;
 		EMAIL_SERVICE_AUTH_PASS: string;
+
+		IPDATA_API_KEY: string;
 	}
 }
