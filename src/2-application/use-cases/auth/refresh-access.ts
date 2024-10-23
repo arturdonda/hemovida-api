@@ -20,7 +20,7 @@ export class RefreshAccessUsecase extends RefreshAccessUsecaseProtocol {
 		return;
 	}
 
-	protected async main({ ipAddress, refreshToken, userAgent }: RefreshAccessUsecaseProtocol.Params): Promise<RefreshAccessUsecaseProtocol.Result> {
+	protected async main({ refreshToken, ipAddress, userAgent }: RefreshAccessUsecaseProtocol.Params): Promise<RefreshAccessUsecaseProtocol.Result> {
 		const session = await this.sessionRepository.getOne({ refreshToken });
 
 		if (session === null) throw new NotFoundError(Session);
